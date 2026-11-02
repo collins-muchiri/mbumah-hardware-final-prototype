@@ -175,6 +175,37 @@ ul{list-style:none}
 .hero-dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.45);border:none;padding:0;transition:all .2s}
 .hero-dot.active{background:var(--orange);transform:scale(1.25);box-shadow:0 0 0 4px rgba(255,140,26,.25)}
 @media (max-width:640px){.hero-arrow{display:none}}
+/* Social gallery slideshow */
+.social-sec{background:var(--navy);color:#fff}
+.social-sec .section-head h2{color:#fff}
+.social-sec .section-head p{color:rgba(255,255,255,.78)}
+.social-grid{display:grid;grid-template-columns:1.45fr 1fr;gap:44px;align-items:center}
+.soc-frame{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/10;background:#0B1F33;box-shadow:0 18px 44px rgba(0,0,0,.38)}
+.social-slide{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;z-index:1}
+.social-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.social-slide.active{opacity:1;z-index:2}
+.social-slide.active img{animation:heroZoom 6s ease-out forwards}
+.soc-live{position:absolute;left:14px;top:14px;z-index:3;display:inline-flex;align-items:center;gap:7px;background:rgba(255,140,26,.94);color:var(--navy);font-size:11.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;border-radius:999px;padding:6px 13px}
+.soc-live .dot{width:7px;height:7px;border-radius:50%;background:var(--navy);animation:socPulse 1.6s infinite}
+@keyframes socPulse{0%,100%{opacity:1}50%{opacity:.25}}
+.soc-count{position:absolute;right:14px;top:14px;z-index:3;background:rgba(11,31,51,.85);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:5px 12px;letter-spacing:1px}
+.soc-cap{position:absolute;left:14px;bottom:16px;z-index:3;display:inline-flex;align-items:center;gap:8px;background:rgba(11,31,51,.85);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:600;border-radius:999px;padding:8px 16px;backdrop-filter:blur(4px);transition:all .2s}
+.soc-cap .icon-sm{color:var(--orange)}
+.soc-cap:hover{background:var(--orange);border-color:var(--orange);color:var(--navy)}
+.soc-cap:hover .icon-sm{color:var(--navy)}
+.soc-dots{position:absolute;bottom:22px;right:16px;z-index:3;display:flex;gap:8px}
+.soc-copy h3{font-family:"Poppins",sans-serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:10px}
+.soc-copy > p{color:rgba(255,255,255,.8);font-size:15px}
+.soc-list{display:grid;gap:11px;margin:18px 0 22px;font-size:14px;color:rgba(255,255,255,.85)}
+.soc-list li{display:flex;align-items:center;gap:10px}
+.soc-list .icon-sm{color:var(--orange);flex-shrink:0}
+.soc-btns{display:flex;flex-wrap:wrap;gap:10px}
+.soc-link{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.28);color:#fff;font-weight:600;font-size:13.5px;border-radius:999px;padding:10px 18px;transition:all .2s}
+.soc-link .icon-sm{color:var(--orange)}
+.soc-link:hover{background:var(--orange);border-color:var(--orange);color:var(--navy)}
+.soc-link:hover .icon-sm{color:var(--navy)}
+@media (max-width:900px){.social-grid{grid-template-columns:1fr}}
+@media (max-width:640px){.soc-cap{font-size:12px;padding:7px 13px}.soc-dots{top:50px;bottom:auto;right:14px}}
 /* Hazard divider */
 .hazard{height:14px;background:repeating-linear-gradient(-45deg,var(--navy) 0 16px,var(--orange) 16px 32px)}
 /* Sections */
@@ -493,6 +524,7 @@ ul{list-style:none}
   <symbol id="i-instagram" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></symbol>
   <symbol id="i-youtube" viewBox="0 0 24 24"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></symbol>
   <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
 </svg>
 
 <!-- 1. TOPBAR -->
@@ -523,6 +555,7 @@ ul{list-style:none}
       <a href="#catalogue">Catalogue</a>
       <a href="#estimators">Estimators</a>
       <a href="#delivery">Delivery</a>
+      <a href="#socials">Socials</a>
       <a href="#request">Request</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -537,6 +570,7 @@ ul{list-style:none}
     <a href="#catalogue">Catalogue</a>
     <a href="#estimators">Estimators</a>
     <a href="#delivery">Delivery</a>
+    <a href="#socials">Socials</a>
     <a href="#request">Request</a>
     <a href="#faq">FAQ</a>
   </nav>
@@ -887,7 +921,50 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 14. REQUEST A QUOTATION -->
+<!-- 14. SOCIAL GALLERY SLIDESHOW (auto playing) -->
+<section class="section social-sec" id="socials" aria-label="Photos from our social media">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">From Our Socials</span>
+      <h2>Follow the Work, Slide by Slide</h2>
+      <p>Photos from real site deliveries and projects we supply across Kenya, the same updates we share on our social pages, playing automatically.</p>
+    </div>
+    <div class="social-grid">
+      <div class="soc-frame" id="socFrame" role="region" aria-roledescription="carousel" aria-label="Photo slideshow from our social media">
+        <span class="soc-live"><span class="dot"></span> Auto Playing</span>
+        <span class="soc-count" id="socCount">1 / 8</span>
+        <div class="social-slide active"><img src="assets/cement.jpg" alt="Cement bags stacked and ready for dispatch" loading="eager" decoding="async"><a class="soc-cap" href="https://www.instagram.com/mbumahhardware" target="_blank" rel="noopener noreferrer" aria-label="See more on Instagram"><svg class="icon icon-sm"><use href="#i-instagram"/></svg> Cement ready for dispatch</a></div>
+        <div class="social-slide"><img src="assets/steel-y12.jpg" alt="Y12 steel reinforcement bars arriving on site" loading="lazy" decoding="async"><a class="soc-cap" href="https://www.instagram.com/mbumahhardware" target="_blank" rel="noopener noreferrer" aria-label="See more on Instagram"><svg class="icon icon-sm"><use href="#i-instagram"/></svg> Y12 steel arriving on site</a></div>
+        <div class="social-slide"><img src="assets/mabati.jpg" alt="Box profile mabati roofing sheets bundled for delivery" loading="lazy" decoding="async"><a class="soc-cap" href="https://www.youtube.com/@mbumahhardware-g7b" target="_blank" rel="noopener noreferrer" aria-label="See more on YouTube"><svg class="icon icon-sm"><use href="#i-youtube"/></svg> Box profile mabati supply</a></div>
+        <div class="social-slide"><img src="assets/blocks.jpg" alt="Concrete building blocks cured and stacked in the yard" loading="lazy" decoding="async"><a class="soc-cap" href="https://www.facebook.com/profile.php?id=61595911899420" target="_blank" rel="noopener noreferrer" aria-label="See more on Facebook"><svg class="icon icon-sm"><use href="#i-facebook"/></svg> Blocks cured and stacked</a></div>
+        <div class="social-slide"><img src="assets/pvc-pipes.png" alt="PVC pipes and fittings ready to order" loading="lazy" decoding="async"><a class="soc-cap" href="https://www.instagram.com/mbumahhardware" target="_blank" rel="noopener noreferrer" aria-label="See more on Instagram"><svg class="icon icon-sm"><use href="#i-instagram"/></svg> PVC piping stock ready to order</a></div>
+        <div class="social-slide"><img src="assets/electrical.jpg" alt="Electrical cables and wiring supplies in stock" loading="lazy" decoding="async"><a class="soc-cap" href="https://www.facebook.com/profile.php?id=61595911899420" target="_blank" rel="noopener noreferrer" aria-label="See more on Facebook"><svg class="icon icon-sm"><use href="#i-facebook"/></svg> Cables and electrical supplies</a></div>
+        <div class="social-slide"><img src="assets/paint.jpg" alt="Paint buckets from leading brands lined up" loading="lazy" decoding="async"><a class="soc-cap" href="https://www.youtube.com/@mbumahhardware-g7b" target="_blank" rel="noopener noreferrer" aria-label="See more on YouTube"><svg class="icon icon-sm"><use href="#i-youtube"/></svg> Paint and finishes, top brands</a></div>
+        <div class="social-slide"><img src="assets/steel-doors.jpg" alt="Steel security doors ready for fitting" loading="lazy" decoding="async"><a class="soc-cap" href="https://www.instagram.com/mbumahhardware" target="_blank" rel="noopener noreferrer" aria-label="See more on Instagram"><svg class="icon icon-sm"><use href="#i-instagram"/></svg> Steel doors ready for fitting</a></div>
+        <button class="hero-arrow prev" id="socPrev" aria-label="Previous photo"><svg class="icon"><use href="#i-chev-left"/></svg></button>
+        <button class="hero-arrow next" id="socNext" aria-label="Next photo"><svg class="icon"><use href="#i-chev-right"/></svg></button>
+        <div class="soc-dots" id="socDots" role="tablist" aria-label="Photo navigation"></div>
+      </div>
+      <div class="soc-copy">
+        <h3>Follow @mbumahhardware</h3>
+        <p>We post the work as it happens. The gallery above plays on its own; tap any caption to open the platform.</p>
+        <ul class="soc-list">
+          <li><svg class="icon icon-sm"><use href="#i-camera"/></svg> Live photos from real site deliveries</li>
+          <li><svg class="icon icon-sm"><use href="#i-store"/></svg> New stock arrivals as they land in the yard</li>
+          <li><svg class="icon icon-sm"><use href="#i-eye"/></svg> Project progress from builds we supply</li>
+          <li><svg class="icon icon-sm"><use href="#i-headset"/></svg> Material tips and answers to your questions</li>
+        </ul>
+        <div class="soc-btns">
+          <a class="soc-link" href="https://www.instagram.com/mbumahhardware" target="_blank" rel="noopener noreferrer"><svg class="icon icon-sm"><use href="#i-instagram"/></svg> Instagram</a>
+          <a class="soc-link" href="https://www.youtube.com/@mbumahhardware-g7b" target="_blank" rel="noopener noreferrer"><svg class="icon icon-sm"><use href="#i-youtube"/></svg> YouTube</a>
+          <a class="soc-link" href="https://www.facebook.com/profile.php?id=61595911899420" target="_blank" rel="noopener noreferrer"><svg class="icon icon-sm"><use href="#i-facebook"/></svg> Facebook</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15. REQUEST A QUOTATION -->
 <section class="section" id="request" style="background:var(--surface);border-top:1px solid var(--line)">
   <div class="container">
     <div class="section-head center reveal">
@@ -955,7 +1032,7 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 15. FAQ -->
+<!-- 16. FAQ -->
 <section class="section" id="faq">
   <div class="container faq-wrap">
     <div class="section-head center reveal">
@@ -989,7 +1066,7 @@ ul{list-style:none}
 
 </main>
 
-<!-- 16. FOOTER -->
+<!-- 17. FOOTER -->
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
@@ -1009,6 +1086,7 @@ ul{list-style:none}
         <li><a href="#catalogue">Catalogue</a></li>
         <li><a href="#estimators">Estimators</a></li>
         <li><a href="#delivery">Delivery</a></li>
+        <li><a href="#socials">Social Gallery</a></li>
         <li><a href="#request">Request a Quotation</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
@@ -1341,6 +1419,21 @@ function startTimer(){
 }
 function stopTimer(){ if (timer) { clearInterval(timer); timer = null; } }
 
+/* Socials slideshow (auto) */
+var socIdx = 0, socTimer = null, socHover = false, socInView = false;
+function socGoTo(i){
+  var slides = $all(".social-slide");
+  socIdx = (i + slides.length) % slides.length;
+  slides.forEach(function(s, idx){ s.classList.toggle("active", idx === socIdx); });
+  $all("#socDots .hero-dot").forEach(function(d, idx){ d.classList.toggle("active", idx === socIdx); });
+  $("#socCount").textContent = (socIdx + 1) + " / " + slides.length;
+}
+function socPlay(){
+  if (socTimer || socHover || !socInView || document.hidden) return;
+  socTimer = setInterval(function(){ socGoTo(socIdx + 1); }, 4000);
+}
+function socPause(){ if (socTimer) { clearInterval(socTimer); socTimer = null; } }
+
 /* Estimators */
 function num(id){ var v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
 function calcWall(){
@@ -1446,6 +1539,33 @@ document.addEventListener("DOMContentLoaded", function(){
   hero.addEventListener("mouseleave", startTimer);
   $("#heroPrev").addEventListener("click", function(){ goTo(current - 1); startTimer(); });
   $("#heroNext").addEventListener("click", function(){ goTo(current + 1); startTimer(); });
+
+  /* Socials slideshow init */
+  var socSlides = $all(".social-slide");
+  if (socSlides.length) {
+    var socDotsBox = $("#socDots");
+    socSlides.forEach(function(_, i){
+      var b = document.createElement("button");
+      b.className = "hero-dot" + (i === 0 ? " active" : "");
+      b.setAttribute("aria-label", "Go to photo " + (i + 1));
+      b.addEventListener("click", function(){ socGoTo(i); socPause(); socPlay(); });
+      socDotsBox.appendChild(b);
+    });
+    var socFrame = $("#socFrame");
+    socFrame.addEventListener("mouseenter", function(){ socHover = true; socPause(); });
+    socFrame.addEventListener("mouseleave", function(){ socHover = false; socPlay(); });
+    $("#socPrev").addEventListener("click", function(){ socGoTo(socIdx - 1); socPause(); socPlay(); });
+    $("#socNext").addEventListener("click", function(){ socGoTo(socIdx + 1); socPause(); socPlay(); });
+    document.addEventListener("visibilitychange", function(){ document.hidden ? socPause() : socPlay(); });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ socInView = en.isIntersecting; if (socInView) { socPlay(); } else { socPause(); } });
+      }, { threshold: 0.25 }).observe(socFrame);
+    } else {
+      socInView = true;
+      socPlay();
+    }
+  }
 
   /* Catalogue events */
   document.addEventListener("click", function(e){

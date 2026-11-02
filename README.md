@@ -11,14 +11,16 @@ Single page quotation-only catalogue. No checkout, no prices: customers browse, 
 - Records API hook (collection quote_items) ready for deployment persistence
 - Deployable to any static host (built for Vercel)
 
-## Structure (16 sections)
-Topbar, Header, Sticky 4-step progress, Sliding hero (3 slides), Quantified strip, Personas, Catalogue with search and category chips, Delivery, Why Choose Us, Brand Partners, Diaspora, Estimators (wall, roof, paint), Projects, Request form with live quote list, FAQ, Footer.
+## Structure (17 sections)
+Topbar, Header, Sticky 4-step progress, Sliding hero (3 slides), Quantified strip, Personas, Catalogue with search and category chips, Delivery, Why Choose Us, Brand Partners, Diaspora, Estimators (wall, roof, paint), Projects, Social gallery slideshow (auto playing, 8 photos, linked to Instagram, YouTube and Facebook), Request form with live quote list, FAQ, Footer.
 
 ## Social profiles
-Linked in the footer Follow Us block and in the LocalBusiness JSON-LD schema (sameAs):
+Linked in the footer Follow Us block, in the Social Gallery slideshow section (nav: Socials) and in the LocalBusiness JSON-LD schema (sameAs):
 - Instagram: https://www.instagram.com/mbumahhardware
 - YouTube: https://www.youtube.com/@mbumahhardware-g7b
 - Facebook: https://www.facebook.com/profile.php?id=61595911899420
+
+Slideshow behaviour: auto advances every 4 seconds, crossfade 700 ms, Ken Burns zoom, pauses on hover, when the tab is hidden and when scrolled out of view, dots and arrows, tap a caption chip to open the matching platform.
 
 ## Deploy
 vercel deploy --prod
