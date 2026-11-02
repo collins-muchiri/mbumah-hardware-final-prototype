@@ -14,5 +14,11 @@ Single page quotation-only catalogue. No checkout, no prices: customers browse, 
 ## Structure (16 sections)
 Topbar, Header, Sticky 4-step progress, Sliding hero (3 slides), Quantified strip, Personas, Catalogue with search and category chips, Delivery, Why Choose Us, Brand Partners, Diaspora, Estimators (wall, roof, paint), Projects, Request form with live quote list, FAQ, Footer.
 
+## Social profiles
+Linked in the footer Follow Us block and in the LocalBusiness JSON-LD schema (sameAs):
+- Instagram: https://www.instagram.com/mbumahhardware
+- YouTube: https://www.youtube.com/@mbumahhardware-g7b
+- Facebook: https://www.facebook.com/profile.php?id=61595911899420
+
 ## Deploy
 vercel deploy --prod
