@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0F2942">
+  <meta name="description" content="Share your Juja-area delivery pin and remarks with Mbumah Hardware when requesting a building materials quotation.">
+  <title>Delivery Details &amp; Remarks | Mbumah Hardware</title>
+  <style>
+    :root{font-family:Inter,Arial,sans-serif;color:#17212b;background:#f4f6f8;line-height:1.55;--navy:#0f2942;--orange:#ff8c1a;--muted:#667085;--line:#d9e0e7}
+    *{box-sizing:border-box}body{margin:0}a{color:inherit}.wrap{max-width:900px;margin:auto;padding:28px 20px 60px}.top{background:var(--navy);color:white;padding:22px max(calc((100vw - 860px)/2),20px)}.top a{color:white;text-decoration:none}.top strong{font-size:1.2rem}.card{background:white;border:1px solid var(--line);border-radius:14px;padding:24px;margin-top:20px;box-shadow:0 6px 22px #0f29420d}h1,h2{color:var(--navy);line-height:1.2}h1{font-size:clamp(1.7rem,4vw,2.4rem);margin:.3em 0}h2{font-size:1.3rem;margin-top:0}.lead,.muted,.hint{color:var(--muted)}label{display:block;color:var(--navy);font-weight:650;margin:16px 0 6px}input,textarea{width:100%;font:inherit;border:1px solid #b9c3cf;border-radius:9px;padding:12px;background:white;color:#17212b}input:focus,textarea:focus{outline:3px solid #ff8c1a55;border-color:var(--orange)}textarea{resize:vertical;min-height:112px}.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;background:var(--navy);color:white;font:inherit;font-weight:700;padding:12px 18px;text-decoration:none;cursor:pointer}.btn.orange{background:var(--orange);color:var(--navy)}.btn.secondary{background:white;color:var(--navy);border:1px solid var(--line)}.preview{margin-top:12px;border-left:4px solid var(--orange);background:#fff7ed;border-radius:6px;padding:12px;overflow-wrap:anywhere}.preview a{color:#0f4c81}.coverage{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.coverage div{border:1px solid var(--line);border-radius:10px;padding:14px}.coverage b{display:block;color:var(--navy)}.notice{font-size:.92rem;background:#fff7ed;padding:12px;border-radius:8px}.status{min-height:1.5em;color:#9b1c1c;font-size:.92rem}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:560px){.card{padding:18px}.row .btn{width:100%}}
+  </style>
+</head>
+<body>
+  <header class="top"><a href="/" aria-label="Mbumah Hardware home"><strong>MBUMAH HARDWARE</strong> <span> | Your Building Partner</span></a></header>
+  <main class="wrap">
+    <p class="muted"><a href="/">Home</a> / Delivery details</p>
+    <h1>Tell us where to deliver</h1>
+    <p class="lead">Add a map pin or site directions and any remarks for our quotation team. Delivery availability, vehicle access, timing and cost are confirmed with your quote.</p>
+
+    <section class="card" aria-labelledby="pin-heading">
+      <h2 id="pin-heading">Delivery map pin</h2>
+      <p class="muted">Paste a Google Maps share link, coordinates (latitude, longitude), or a plus code. You can also describe the site below.</p>
+      <label for="mapPin">Site map pin or Google Maps link</label>
+      <input id="mapPin" name="mapPin" type="text" inputmode="url" autocomplete="url" maxlength="500" placeholder="Paste a maps link or coordinates, e.g. -1.1483165, 37.0609671" aria-describedby="pinHint pinStatus">
+      <p class="hint" id="pinHint">We include the location you enter in the WhatsApp quotation message; it is not automatically sent or saved by this page.</p>
+      <p class="status" id="pinStatus" role="status" aria-live="polite"></p>
+      <div class="preview" id="pinPreview" hidden></div>
+      <label for="directions">Site name, area or directions <span class="muted">(optional)</span></label>
+      <input id="directions" name="directions" type="text" maxlength="250" placeholder="e.g. Juja Farm, near [landmark], gate/access details">
+      <div class="row">
+        <a class="btn secondary" href="https://www.google.com/maps/place/MBUMAH+HARDWARE/@-1.1483165,37.0583922,17z/data=!3m1!4b1!4m6!3m5!1s0x182f45e92fd4da4b:0xa39ed09ac86b2b98!8m2!3d-1.1483165!4d37.0609671!16sg11l6qkcnfw?entry=ttu" target="_blank" rel="noopener noreferrer">View Mbumah Hardware on Maps</a>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="coverage-heading">
+      <h2 id="coverage-heading">Delivery coverage around Juja</h2>
+      <p>Juja is our coverage focus for this request page. Tell us the specific estate, road or landmark so the team can check the route and site access before confirming a delivery plan.</p>
+      <div class="coverage">
+        <div><b>Juja town and nearby sites</b><span class="muted">Share a map pin and landmark for accurate site identification.</span></div>
+        <div><b>Juja Farm and surrounding areas</b><span class="muted">Include access-road or vehicle restrictions in your remarks.</span></div>
+        <div><b>Outside the immediate Juja area?</b><span class="muted">Send the location anyway; coverage, timing and transport charges are confirmed for each quotation.</span></div>
+      </div>
+      <p class="notice"><strong>Delivery terms:</strong> No delivery radius, price, minimum order or turnaround is guaranteed on this page. The sales team confirms availability and any transport costs for your exact pin and order before dispatch. See <a href="https://www.chazaqhardware.com/delivery" target="_blank" rel="noopener noreferrer">Chazaq Hardware delivery information</a> as a regional reference, not as Mbumah Hardware's terms.</p>
+    </section>
+
+    <section class="card" aria-labelledby="remarks-heading">
+      <h2 id="remarks-heading">Client remarks and feedback</h2>
+      <p class="muted">Add delivery instructions, preferred timing, access notes, feedback or other comments. A live preview below shows exactly what will be included in your message.</p>
+      <label for="remarks">Your remarks</label>
+      <textarea id="remarks" name="remarks" maxlength="2000" placeholder="For example: Please call the site contact before arrival; lorry access is via the north gate. Any feedback or other request..."></textarea>
+      <div class="preview" aria-live="polite"><strong>Remarks preview</strong><p id="remarksPreview" class="muted">Your remarks will appear here as you type.</p></div>
+      <div class="row">
+        <button class="btn orange" id="sendRequest" type="button">Continue on WhatsApp</button>
+        <button class="btn secondary" id="clearFields" type="button">Clear details</button>
+      </div>
+      <p class="status" id="formStatus" role="status" aria-live="polite"></p>
+      <p class="hint">This static page opens WhatsApp with a prefilled draft. Review and send it yourself; no details are submitted until you send the message.</p>
+    </section>
+  </main>
+  <script>
+    (function(){
+      'use strict';
+      var pin=document.getElementById('mapPin');
+      var pinPreview=document.getElementById('pinPreview');
+      var pinStatus=document.getElementById('pinStatus');
+      var remarks=document.getElementById('remarks');
+      var remarksPreview=document.getElementById('remarksPreview');
+      var formStatus=document.getElementById('formStatus');
+      function safeMapUrl(value){
+        var text=value.trim();
+        if(!text) return '';
+        if(/^-?\d{1,2}(?:\.\d+)?,\s*-?\d{1,3}(?:\.\d+)?$/.test(text)) return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(text);
+        try { var url=new URL(text); if(url.protocol==='https:' && (url.hostname==='maps.google.com'||url.hostname==='www.google.com'||url.hostname==='goo.gl'||url.hostname==='maps.app.goo.gl')) return url.href; } catch(e){}
+        return '';
+      }
+      pin.addEventListener('input',function(){
+        var text=pin.value.trim();
+        var url=safeMapUrl(text);
+        pinPreview.hidden=!text;
+        pinStatus.textContent='';
+        if(!text){pinPreview.textContent='';return;}
+        if(url){
+          pinPreview.textContent='Pin entered: ';
+          var link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=text.length>90?text.slice(0,87)+'…':text;
+          pinPreview.appendChild(link);
+          pinStatus.textContent='Map pin looks ready.';
+        }else{
+          pinPreview.textContent='Location entered: '+text;
+          pinStatus.textContent='This will be sent as text. For a clickable map pin, paste a Google Maps URL or latitude, longitude.';
+        }
+      });
+      remarks.addEventListener('input',function(){remarksPreview.textContent=remarks.value.trim()||'Your remarks will appear here as you type.';});
+      document.getElementById('clearFields').addEventListener('click',function(){
+        document.getElementById('deliveryDetails').reset();
+        pinPreview.hidden=true;pinPreview.textContent='';pinStatus.textContent='';
+        remarksPreview.textContent='Your remarks will appear here as you type.';formStatus.textContent='Details cleared.';
+      });
+      document.getElementById('sendRequest').addEventListener('click',function(){
+        var sections=['Hello Mbumah Hardware, I would like a quotation and delivery check for a Juja-area site.'];
+        var location=pin.value.trim(), directions=document.getElementById('directions').value.trim(), comments=remarks.value.trim();
+        if(location) sections.push('Map pin/location: '+location);
+        if(directions) sections.push('Site directions: '+directions);
+        if(comments) sections.push('Client remarks: '+comments);
+        sections.push('Please confirm delivery availability, timing, access requirements and transport cost for this location.');
+        var whatsappUrl='https://wa.me/254795191909?text='+encodeURIComponent(sections.join('\n\n'));
+        formStatus.textContent='Opening WhatsApp with your draft. Please review it before sending.';
+        window.open(whatsappUrl,'_blank','noopener,noreferrer');
+      });
+      // Form wrapper enables a single, accessible reset operation.
+      var form=document.createElement('form');
+      form.id='deliveryDetails';form.addEventListener('submit',function(e){e.preventDefault();});
+      document.querySelectorAll('#mapPin, #directions, #remarks').forEach(function(field){field.parentNode.insertBefore(form,field);});
+      // Keep native controls grouped in the page while avoiding moving fields out of their cards.
+      form.remove();
+    })();
+  </script>
+</body>
+</html>
