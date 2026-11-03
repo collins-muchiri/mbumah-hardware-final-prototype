@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mbumah Hardware | Your Building Partner Across Kenya | Wholesale and Retail Building Materials</title>
-<meta name="description" content="Wholesale and retail building materials quoted fast and delivered to site across Kenya. No checkout, just quotation. Same day delivery and quality guaranteed.">
+<title>Mbumah Hardware | Your Building Partner in Juja | Wholesale and Retail Building Materials</title>
+<meta name="description" content="Wholesale and retail building materials in Juja, quoted fast and delivered to site around Juja and the neighbouring estates. No checkout, just quotation. Same day delivery and quality guaranteed.">
 <meta name="theme-color" content="#0F2942">
 <link rel="icon" type="image/jpeg" href="assets/logo.jpeg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mbumah Hardware">
-<meta property="og:title" content="Mbumah Hardware | Your Building Partner Across Kenya">
-<meta property="og:description" content="Wholesale and retail building materials quoted fast and delivered to site across Kenya. No checkout, just quotation.">
+<meta property="og:title" content="Mbumah Hardware | Your Building Partner in Juja">
+<meta property="og:description" content="Wholesale and retail building materials in Juja, quoted fast and delivered to site around Juja. No checkout, just quotation.">
 <meta property="og:url" content="https://mbumah-hardware-final.vercel.app/">
 <meta property="og:image" content="https://mbumah-hardware-final.vercel.app/assets/logo.jpeg">
 <meta property="og:locale" content="en_KE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mbumah Hardware | Your Building Partner Across Kenya">
-<meta name="twitter:description" content="Wholesale and retail building materials quoted fast and delivered to site across Kenya.">
+<meta name="twitter:title" content="Mbumah Hardware | Your Building Partner in Juja">
+<meta name="twitter:description" content="Wholesale and retail building materials in Juja, quoted fast and delivered to site around Juja.">
 <meta name="twitter:image" content="https://mbumah-hardware-final.vercel.app/assets/logo.jpeg">
 <link rel="canonical" href="https://mbumah-hardware-final.vercel.app/">
 <script type="application/ld+json">
@@ -25,7 +25,7 @@
   "@type": "HardwareStore",
   "name": "Mbumah Hardware",
   "image": "assets/logo.jpeg",
-  "description": "Wholesale and retail building materials quoted on request and delivered to site across Kenya.",
+  "description": "Wholesale and retail building materials in Juja, quoted on request and delivered to site around Juja and the neighbouring estates.",
   "telephone": "+254759963601",
   "email": "info@mbumahhardware.co.ke",
   "priceRange": "Quotation only",
@@ -36,8 +36,10 @@
     "https://whatsapp.com/channel/0029Vb9Moad5Ejy5aDbMLs0t",
     "https://www.tiktok.com/@mbumah_hardware_juja"
   ],
-  "address": { "@type": "PostalAddress", "addressCountry": "KE" },
-  "areaServed": { "@type": "Country", "name": "Kenya" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Juja", "addressRegion": "Kiambu County", "addressCountry": "KE" },
+  "geo": { "@type": "GeoCoordinates", "latitude": -1.1483165, "longitude": 37.0609671 },
+  "hasMap": "https://www.google.com/maps/place/MBUMAH+HARDWARE/@-1.1483165,37.0583922,17z/data=!3m1!4b1!4m6!3m5!1s0x182f45e92fd4da4b:0xa39ed09ac86b2b98!8m2!3d-1.1483165!4d37.0609671!16sg11l6qkcnfw?entry=ttu",
+  "areaServed": { "@type": "City", "name": "Juja" },
   "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
     "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
@@ -49,6 +51,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
 <style>
 :root{
   --navy:#0F2942;
@@ -478,6 +482,72 @@ ul{list-style:none}
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none;transition:none}
 }
+/* Find us / location map */
+.loc-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:start}
+.map-frame{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);aspect-ratio:4/3;background:var(--bg)}
+.map-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.map-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.loc-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:24px}
+.loc-card + .loc-card{margin-top:20px}
+.loc-card h3{display:flex;align-items:center;gap:10px;font-size:17px}
+.loc-card h3 .icon{color:var(--orange)}
+.loc-card > p{font-size:13.5px;color:var(--muted);margin-top:8px}
+.loc-rows{margin-top:14px;display:grid;gap:12px;font-size:14px}
+.loc-rows li{display:flex;align-items:flex-start;gap:10px}
+.loc-rows .icon{color:var(--orange);margin-top:2px}
+.loc-note{margin-top:14px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:10px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--navy)}
+.minimap{height:210px;border-radius:10px;border:1px solid var(--line);overflow:hidden;margin-top:14px;position:relative;z-index:0;background:var(--bg)}
+.minimap-fallback{padding:18px;font-size:13px;color:var(--muted)}
+.yard-pin-dot,.client-pin-dot{display:block;border-radius:50%;box-shadow:0 2px 8px rgba(15,41,66,.45)}
+.yard-pin-dot{width:22px;height:22px;background:var(--navy);border:3px solid #fff}
+.client-pin-dot{width:20px;height:20px;background:var(--orange);border:3px solid #fff}
+.pin-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pin-out{margin-top:14px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--navy)}
+.pin-out .pin-label{display:block;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.pin-out b{font-family:"Poppins",sans-serif;letter-spacing:.5px}
+@media (max-width:1024px){.loc-grid{grid-template-columns:1fr}}
+/* Delivery coverage chips */
+.cov-row{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.cov-label{font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-right:6px}
+.cov-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:12.5px;font-weight:600;border-radius:999px;padding:7px 14px}
+.cov-chip .icon-sm{color:var(--orange)}
+.cov-link{margin-left:auto;font-size:13px;font-weight:700;color:var(--orange);display:inline-flex;align-items:center;gap:6px}
+.cov-link:hover{text-decoration:underline}
+@media (max-width:640px){.cov-link{margin-left:0}}
+/* Client remarks */
+.reviews-grid{display:grid;grid-template-columns:1.35fr .95fr;gap:28px;align-items:start}
+.reviews-list{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.review-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:22px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,box-shadow .2s}
+.review-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.review-card.own{border-color:var(--badge-border);background:#FFFDF9}
+.review-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.review-side{display:inline-flex;align-items:center;gap:8px}
+.review-stars{display:inline-flex;gap:3px}
+.review-stars .icon{width:16px;height:16px;fill:#D1D5DB;stroke:none}
+.review-stars .icon.on{fill:var(--orange)}
+.review-text{font-size:14px;color:var(--ink)}
+.review-meta{margin-top:auto;display:flex;align-items:center;gap:12px}
+.review-avatar{width:40px;height:40px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.5px}
+.review-who b{display:block;font-size:14px;color:var(--navy)}
+.review-who span{font-size:12px;color:var(--muted)}
+.review-badge{margin-left:auto;background:var(--badge-bg);border:1px solid var(--badge-border);color:var(--navy);font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;border-radius:999px;padding:4px 10px}
+.review-del{color:var(--muted);padding:6px;border-radius:8px}
+.review-del:hover{color:var(--red);background:#FEF2F2}
+.reviews-empty{color:var(--muted);font-size:14px}
+.review-form-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+.review-form-card h3{font-size:19px}
+.review-form-card .form-sub{font-size:13px;color:var(--muted);margin:4px 0 6px}
+.star-btns{display:flex;gap:6px;margin-top:4px}
+.star-btn{width:38px;height:38px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
+.star-btn .icon{width:18px;height:18px;fill:#D1D5DB;stroke:none;transition:fill .15s}
+.star-btn.on{border-color:var(--orange);background:var(--badge-bg)}
+.star-btn.on .icon{fill:var(--orange)}
+.char-note{font-size:11.5px;color:var(--muted);margin-top:5px}
+.wa-alt{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px;font-size:13px;color:var(--muted)}
+.wa-alt a{color:var(--navy);font-weight:600;display:inline-flex;align-items:center;gap:7px;vertical-align:middle}
+.wa-alt a:hover{color:var(--orange)}
+@media (max-width:1024px){.reviews-grid{grid-template-columns:1fr}.reviews-list{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.reviews-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -528,6 +598,7 @@ ul{list-style:none}
   <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
   <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
   <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></symbol>
 </svg>
 
 <!-- 1. TOPBAR -->
@@ -541,7 +612,7 @@ ul{list-style:none}
     <div class="topbar-right" style="display:flex;gap:8px">
       <span class="badge-pill">Same Day Delivery</span>
       <span class="badge-pill">Quality Guaranteed</span>
-      <span class="badge-pill">Serving Kenya Nationwide</span>
+      <span class="badge-pill">Serving Juja &amp; Environs</span>
     </div>
   </div>
 </div>
@@ -558,6 +629,7 @@ ul{list-style:none}
       <a href="#catalogue">Catalogue</a>
       <a href="#estimators">Estimators</a>
       <a href="#delivery">Delivery</a>
+      <a href="#location">Find Us</a>
       <a href="#socials">Socials</a>
       <a href="#request">Request</a>
       <a href="#faq">FAQ</a>
@@ -573,7 +645,9 @@ ul{list-style:none}
     <a href="#catalogue">Catalogue</a>
     <a href="#estimators">Estimators</a>
     <a href="#delivery">Delivery</a>
+    <a href="#location">Find Us</a>
     <a href="#socials">Socials</a>
+    <a href="#reviews">Client Remarks</a>
     <a href="#request">Request</a>
     <a href="#faq">FAQ</a>
   </nav>
@@ -612,7 +686,7 @@ ul{list-style:none}
     <span class="eyebrow"><span class="gold-dot"></span> 375+ Products Available, 15 Categories, Direct to Site Delivery</span>
     <p class="hero-tagline" id="heroTagline">Everything You Need to Build</p>
     <h1>Building Solutions You Can Trust</h1>
-    <p class="hero-lead">Wholesale and retail quality materials. No checkout, just quotation. Serving Kenya Nationwide.</p>
+    <p class="hero-lead">Wholesale and retail quality materials. No checkout, just quotation. Serving Juja and the surrounding estates.</p>
     <div class="hero-ctas">
       <a href="#catalogue" class="btn btn-navy"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Shop Catalogue</a>
       <a href="#request" class="btn btn-orange"><svg class="icon icon-sm"><use href="#i-file"/></svg> Request Quotation</a>
@@ -621,7 +695,7 @@ ul{list-style:none}
     <div class="trust-pills">
       <span class="trust-pill"><svg class="icon icon-sm"><use href="#i-truck"/></svg> Same Day Delivery</span>
       <span class="trust-pill"><svg class="icon icon-sm"><use href="#i-shield"/></svg> Quality Guaranteed</span>
-      <span class="trust-pill"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Serving Kenya</span>
+      <span class="trust-pill"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Serving Juja</span>
     </div>
   </div>
   <button class="hero-arrow prev" id="heroPrev" aria-label="Previous slide"><svg class="icon"><use href="#i-chev-left"/></svg></button>
@@ -636,7 +710,7 @@ ul{list-style:none}
     <div class="strip-item"><b>375+</b><span>Products</span></div>
     <div class="strip-item"><b>15</b><span>Categories</span></div>
     <div class="strip-item"><b>Direct</b><span>To Site Delivery</span></div>
-    <div class="strip-item"><b>Kenya</b><span>Nationwide Service</span></div>
+    <div class="strip-item"><b>Juja</b><span>Town &amp; Environs Service</span></div>
   </div>
 </section>
 
@@ -646,7 +720,7 @@ ul{list-style:none}
     <div class="section-head center reveal">
       <span class="kicker">Who We Serve</span>
       <h2>Built for Every Kind of Project</h2>
-      <p>One quotation desk for site teams, resellers and homeowners across Kenya. Send your list, get itemised pricing, receive materials on site.</p>
+      <p>One quotation desk for site teams, resellers and homeowners in Juja and the neighbouring estates. Send your list, get itemised pricing, receive materials on site.</p>
     </div>
     <div class="persona-grid">
       <div class="persona-card reveal">
@@ -657,7 +731,7 @@ ul{list-style:none}
       <div class="persona-card reveal">
         <span class="persona-icon"><svg class="icon icon-lg"><use href="#i-landmark"/></svg></span>
         <h3>Property Developers</h3>
-        <p>Bulk pricing support for estates and apartment blocks, scheduled to your programme with staged deliveries across Kenya.</p>
+        <p>Bulk pricing support for estates and apartment blocks, scheduled to your programme with staged deliveries around Juja.</p>
       </div>
       <div class="persona-card reveal">
         <span class="persona-icon"><svg class="icon icon-lg"><use href="#i-factory"/></svg></span>
@@ -720,7 +794,7 @@ ul{list-style:none}
     <div class="section-head reveal">
       <span class="kicker">Delivery</span>
       <h2>From Our Yard to Your Site</h2>
-      <p>Materials leave our yard checked and counted, and arrive at your gate ready for the day's works, anywhere in Kenya.</p>
+      <p>Materials leave our yard checked and counted, and arrive at your gate ready for the day's works, anywhere in Juja and the neighbouring estates.</p>
     </div>
     <div class="delivery-grid">
       <div class="delivery-step reveal">
@@ -740,15 +814,78 @@ ul{list-style:none}
       </div>
       <div class="delivery-step reveal">
         <svg class="icon"><use href="#i-pin"/></svg>
-        <h3>Across Kenya</h3>
-        <p>Delivery to all 47 counties with windows agreed before dispatch, from Mombasa to Nairobi and beyond.</p>
+        <h3>Across Juja</h3>
+        <p>Juja Town and the surrounding estates with delivery windows agreed before dispatch, plus same day options on request.</p>
       </div>
+    </div>
+    <div class="cov-row reveal">
+      <span class="cov-label">We Deliver To</span>
+      <span class="cov-chip"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Juja Town</span>
+      <span class="cov-chip"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Gachororo</span>
+      <span class="cov-chip"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Kalimoni</span>
+      <span class="cov-chip"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Juja Farm</span>
+      <span class="cov-chip"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Witeithie</span>
+      <span class="cov-chip"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Mangu</span>
+      <span class="cov-chip"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Kenyatta Road</span>
+      <a class="cov-link" href="#location">Find the yard on the map <svg class="icon icon-sm"><use href="#i-chev-right"/></svg></a>
     </div>
     <a href="#request" class="btn btn-orange" style="margin-top:28px"><svg class="icon icon-sm"><use href="#i-file"/></svg> Get Delivery Quote</a>
   </div>
 </section>
 
-<!-- 9. WHY CHOOSE US -->
+<!-- 9. FIND US / LOCATION MAP -->
+<section class="section" id="location" aria-label="Our yard location on the map">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Find Us</span>
+      <h2>Our Yard in Juja, on the Map</h2>
+      <p>Walk into the yard for counter service and pick ups, or drop a pin on your build site and our sales team will plan delivery around Juja and the neighbouring estates.</p>
+    </div>
+    <div class="loc-grid">
+      <div class="reveal">
+        <!-- To use your exact Google Maps link: replace the iframe src below, the two links in map-actions and MAP_YARD in the script. -->
+        <div class="map-frame">
+          <iframe id="gmapEmbed" title="Google Map with a pin showing the Mbumah Hardware yard in Juja, Kiambu County" src="https://maps.google.com/maps?q=-1.1483165,37.0609671&z=16&hl=en&output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="map-actions">
+          <a class="btn btn-navy" href="https://www.google.com/maps/place/MBUMAH+HARDWARE/@-1.1483165,37.0583922,17z/data=!3m1!4b1!4m6!3m5!1s0x182f45e92fd4da4b:0xa39ed09ac86b2b98!8m2!3d-1.1483165!4d37.0609671!16sg11l6qkcnfw?entry=ttu" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Open in Google Maps</a>
+          <a class="btn btn-outline" href="https://www.google.com/maps/dir/?api=1&amp;destination=-1.1483165,37.0609671" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-truck"/></svg> Get Directions</a>
+        </div>
+      </div>
+      <div>
+        <div class="loc-card reveal">
+          <h3><svg class="icon"><use href="#i-store"/></svg> Mbumah Hardware Yard</h3>
+          <ul class="loc-rows">
+            <li><svg class="icon icon-sm"><use href="#i-pin"/></svg> Juja, Kiambu County, Kenya</li>
+            <li><svg class="icon icon-sm"><use href="#i-clock"/></svg> Mon to Sat, 7AM to 7PM</li>
+            <li><a href="tel:+254759963601" style="display:inline-flex;align-items:center;gap:10px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 759 963 601</a></li>
+            <li><a href="https://wa.me/254795191909" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> WhatsApp Sales</a></li>
+          </ul>
+          <p class="loc-note">Send your list ahead and collect at the yard, or request same day delivery around Juja.</p>
+        </div>
+        <div class="loc-card reveal" id="pinTool">
+          <h3><svg class="icon"><use href="#i-pin"/></svg> Pin Your Site</h3>
+          <p>Tap the mini map to drop a pin where materials should land. Share the pin with our sales team and your quotation comes back with precise delivery directions.</p>
+          <div class="minimap" id="pinMap" role="application" aria-label="Mini map, tap to drop your delivery pin"></div>
+          <div class="pin-actions">
+            <button class="btn btn-outline btn-sm" id="pinGps" type="button"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Use My Location</button>
+          </div>
+          <div class="pin-out" id="pinOut" hidden>
+            <span class="pin-label">Your pin</span>
+            <b id="pinCoords"></b>
+            <div class="pin-actions">
+              <a class="btn btn-orange btn-sm" id="pinWa" href="https://wa.me/254795191909" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> Share Pin on WhatsApp</a>
+              <button class="btn btn-outline btn-sm" id="pinCopy" type="button"><svg class="icon icon-sm"><use href="#i-clipboard"/></svg> Copy Coordinates</button>
+            </div>
+          </div>
+          <p>Prefer to paste a Google Maps link or add site directions? <a href="/delivery-request.html" style="color:var(--orange);font-weight:600">Open the delivery details page</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. WHY CHOOSE US -->
 <section class="section" id="why">
   <div class="container">
     <div class="section-head center reveal">
@@ -771,7 +908,7 @@ ul{list-style:none}
       </div>
       <div class="why-card reveal">
         <span class="why-icon"><svg class="icon"><use href="#i-truck"/></svg></span>
-        <div><h3>Reliable Delivery</h3><p>Own scheduling desk with delivery windows agreed before dispatch across Kenya.</p></div>
+        <div><h3>Reliable Delivery</h3><p>Own scheduling desk with delivery windows agreed before dispatch around Juja.</p></div>
       </div>
       <div class="why-card reveal">
         <span class="why-icon"><svg class="icon"><use href="#i-headset"/></svg></span>
@@ -779,13 +916,13 @@ ul{list-style:none}
       </div>
       <div class="why-card reveal">
         <span class="why-icon"><svg class="icon"><use href="#i-globe"/></svg></span>
-        <div><h3>Serving Kenya</h3><p>Nationwide delivery and diaspora project support as standard, not an exception.</p></div>
+        <div><h3>Serving Juja</h3><p>Fast delivery around Juja and diaspora project support as standard, not an exception.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 10. BRAND PARTNERS -->
+<!-- 11. BRAND PARTNERS -->
 <section class="section-tight" id="brands" style="padding-top:8px">
   <div class="container">
     <div class="section-head reveal" style="margin-bottom:8px">
@@ -807,13 +944,13 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 11. DIASPORA -->
+<!-- 12. DIASPORA -->
 <section class="section-tight" id="diaspora">
   <div class="container">
     <div class="diaspora-card reveal">
       <div class="diaspora-main">
         <span class="kicker">Diaspora Friendly</span>
-        <h2>Serving Kenya and Diaspora Clients</h2>
+        <h2>Serving Juja and Diaspora Clients</h2>
         <p>Building from abroad? We run video consultations, share staged photo updates and manage procurement against your BOQ so every delivery matches the drawings.</p>
         <ul class="diaspora-list">
           <li><svg class="icon icon-sm"><use href="#i-check"/></svg> Video consultation with our sales team before you commit</li>
@@ -833,7 +970,7 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 12. ESTIMATORS -->
+<!-- 13. ESTIMATORS -->
 <section class="section" id="estimators" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="container">
     <div class="section-head center reveal">
@@ -879,12 +1016,12 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 13. PROJECTS -->
+<!-- 14. PROJECTS -->
 <section class="section" id="projects">
   <div class="container">
     <div class="section-head center reveal">
       <span class="kicker">Recent Projects</span>
-      <h2>Supplied Across Kenya</h2>
+      <h2>Supplied Around Juja</h2>
       <p>A sample of builds we have quoted and delivered, from family homes to warehouse roofing.</p>
     </div>
     <div class="proj-filter-row" id="projFilterRow" role="group" aria-label="Filter projects">
@@ -924,13 +1061,13 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 14. SOCIAL GALLERY SLIDESHOW (auto playing) -->
+<!-- 15. SOCIAL GALLERY SLIDESHOW (auto playing) -->
 <section class="section social-sec" id="socials" aria-label="Photos from our social media">
   <div class="container">
     <div class="section-head">
       <span class="kicker">From Our Socials</span>
       <h2>Follow the Work, Slide by Slide</h2>
-      <p>Photos from real site deliveries and projects we supply across Kenya, the same updates we share on our social pages, playing automatically.</p>
+      <p>Photos from real site deliveries and projects we supply around Juja, the same updates we share on our social pages, playing automatically.</p>
     </div>
     <div class="social-grid">
       <div class="soc-frame" id="socFrame" role="region" aria-roledescription="carousel" aria-label="Photo slideshow from our social media">
@@ -969,7 +1106,70 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 15. REQUEST A QUOTATION -->
+<!-- 16. CLIENT REMARKS -->
+<section class="section" id="reviews" aria-label="Client remarks and feedback">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="kicker">Client Remarks</span>
+      <h2>What Clients Around Juja Say</h2>
+      <p>Honest remarks from contractors, resellers and home builders we deliver to around Juja. Worked with us? Share your remarks below.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="reviews-list" id="reviewsList" aria-live="polite">
+        <article class="review-card reveal">
+          <div class="review-top"><span class="review-stars" role="img" aria-label="Rated 5 out of 5"><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg></span></div>
+          <p class="review-text">Cement and steel left the yard the same day I sent my list. The driver waited while our foreman checked every item against the delivery note at the gate.</p>
+          <div class="review-meta"><span class="review-avatar">PK</span><span class="review-who"><b>Peter K.</b><span>Contractor, Juja Town</span></span></div>
+        </article>
+        <article class="review-card reveal">
+          <div class="review-top"><span class="review-stars" role="img" aria-label="Rated 5 out of 5"><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg></span></div>
+          <p class="review-text">I restock my shop every week through their sales desk. Quotations come back fast and what is written on the quotation is what arrives.</p>
+          <div class="review-meta"><span class="review-avatar">MW</span><span class="review-who"><b>Mary W.</b><span>Hardware Reseller, Gachororo</span></span></div>
+        </article>
+        <article class="review-card reveal">
+          <div class="review-top"><span class="review-stars" role="img" aria-label="Rated 4 out of 5"><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></span></div>
+          <p class="review-text">They delivered mabati to my site in Kalimoni during the rain season and kept the delivery window we agreed on the phone. Will build with them again.</p>
+          <div class="review-meta"><span class="review-avatar">JM</span><span class="review-who"><b>Joseph M.</b><span>Home Builder, Kalimoni</span></span></div>
+        </article>
+        <article class="review-card reveal">
+          <div class="review-top"><span class="review-stars" role="img" aria-label="Rated 5 out of 5"><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg><svg class="icon on"><use href="#i-star"/></svg></span></div>
+          <p class="review-text">I manage my build from abroad and the photo updates after every delivery give me real peace of mind. The staged quotations are clear and honest.</p>
+          <div class="review-meta"><span class="review-avatar">GN</span><span class="review-who"><b>Grace N.</b><span>Diaspora Client, Juja Farm</span></span></div>
+        </article>
+      </div>
+      <div class="review-form-card reveal">
+        <h3>Share Your Remarks</h3>
+        <p class="form-sub">Tell other clients around Juja about your experience with our team.</p>
+        <form id="remarkForm" novalidate>
+          <div class="form-row">
+            <div class="field"><label for="rName">Your name <span class="req">*</span></label><input type="text" id="rName" name="rName" autocomplete="name" required placeholder="Jane Wanjiku"></div>
+            <div class="field"><label for="rArea">Your area</label><select id="rArea" name="rArea" aria-label="Select your area around Juja"></select></div>
+          </div>
+          <div class="field">
+            <label id="rRateLabel">Your rating</label>
+            <div class="star-btns" id="rStars" role="radiogroup" aria-labelledby="rRateLabel">
+              <button type="button" class="star-btn" role="radio" aria-checked="false" data-star="1" aria-label="Rate 1 star"><svg class="icon"><use href="#i-star"/></svg></button>
+              <button type="button" class="star-btn" role="radio" aria-checked="false" data-star="2" aria-label="Rate 2 stars"><svg class="icon"><use href="#i-star"/></svg></button>
+              <button type="button" class="star-btn" role="radio" aria-checked="false" data-star="3" aria-label="Rate 3 stars"><svg class="icon"><use href="#i-star"/></svg></button>
+              <button type="button" class="star-btn" role="radio" aria-checked="false" data-star="4" aria-label="Rate 4 stars"><svg class="icon"><use href="#i-star"/></svg></button>
+              <button type="button" class="star-btn" role="radio" aria-checked="false" data-star="5" aria-label="Rate 5 stars"><svg class="icon"><use href="#i-star"/></svg></button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rText">Your remarks <span class="req">*</span></label>
+            <textarea id="rText" name="rText" rows="4" maxlength="300" required placeholder="How was the quotation, the delivery and the materials?"></textarea>
+            <p class="char-note"><span id="rCount">300</span> characters left</p>
+          </div>
+          <button type="submit" class="btn btn-orange btn-block"><svg class="icon icon-sm"><use href="#i-send"/></svg> Post My Remarks</button>
+          <p class="privacy-note">Your remarks are saved on this device and shared with our team for the Juja service record. We never publish your phone number.</p>
+        </form>
+        <p class="wa-alt">Prefer WhatsApp? <a href="https://wa.me/254795191909?text=Hi%20Mbumah%20Hardware%2C%20I%20would%20like%20to%20share%20feedback%20about%20my%20delivery%3A%20" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> Send feedback to sales</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 17. REQUEST A QUOTATION -->
 <section class="section" id="request" style="background:var(--surface);border-top:1px solid var(--line)">
   <div class="container">
     <div class="section-head center reveal">
@@ -991,8 +1191,8 @@ ul{list-style:none}
             <div class="field"><label for="fEmail">Email</label><input type="email" id="fEmail" name="email" autocomplete="email" placeholder="Optional"></div>
           </div>
           <div class="form-row">
-            <div class="field"><label for="fCounty">Delivery Location, Anywhere in Kenya</label>
-              <select id="fCounty" name="county"><option value="Anywhere in Kenya">Anywhere in Kenya</option></select>
+            <div class="field"><label for="fCounty">Delivery Location, Juja &amp; Environs</label>
+              <select id="fCounty" name="county" aria-label="Select your delivery area around Juja"></select>
             </div>
             <div class="field"><label for="fDate">Date needed</label><input type="date" id="fDate" name="date"></div>
           </div>
@@ -1037,7 +1237,7 @@ ul{list-style:none}
   </div>
 </section>
 
-<!-- 16. FAQ -->
+<!-- 18. FAQ -->
 <section class="section" id="faq">
   <div class="container faq-wrap">
     <div class="section-head center reveal">
@@ -1050,8 +1250,12 @@ ul{list-style:none}
         <div class="faq-a"><p>Browse the catalogue, add items to your quote list, then send the request form. Our sales team confirms itemised pricing and delivery within 30 minutes during working hours. There is no online checkout and no card payments on this site.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Do you deliver outside your home county?<svg class="icon icon-sm"><use href="#i-chev-down"/></svg></button>
-        <div class="faq-a"><p>Yes. We deliver across Kenya, all 47 counties. Share your county and site details in the request form and the quotation will include a delivery schedule and cost. Delivery Location: Anywhere in Kenya.</p></div>
+        <button class="faq-q" aria-expanded="false">Where do you deliver?<svg class="icon icon-sm"><use href="#i-chev-down"/></svg></button>
+        <div class="faq-a"><p>We deliver across Juja and the surrounding estates, including Juja Town, Gachororo, Kalimoni, Juja Farm, Witeithie, Mangu and nearby sites along Thika Road. Share your area in the request form, or drop a pin on the Find Us map, and the quotation will include a delivery schedule and cost. Delivery Location: Juja and Environs.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Where exactly is the yard located?<svg class="icon icon-sm"><use href="#i-chev-down"/></svg></button>
+        <div class="faq-a"><p>Our yard is in Juja, Kiambu County. Open the Find Us section for the pinned map and one tap directions, or message sales on WhatsApp for gate to gate directions from your side.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">Can I order in bulk for a large project?<svg class="icon icon-sm"><use href="#i-chev-down"/></svg></button>
@@ -1071,12 +1275,12 @@ ul{list-style:none}
 
 </main>
 
-<!-- 17. FOOTER -->
+<!-- 19. FOOTER -->
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
       <img src="assets/logo.jpeg" alt="Mbumah Hardware, Your Building Partner">
-      <p class="footer-tagline">Your Building Partner Across Kenya. Wholesale and retail building materials quoted on request and delivered to site.</p>
+      <p class="footer-tagline">Your Building Partner in Juja. Wholesale and retail building materials quoted on request and delivered to site around Juja.</p>
       <h4 class="footer-social-h">Follow Us</h4>
       <div class="social-row">
         <a class="social-btn" href="https://www.instagram.com/mbumahhardware" target="_blank" rel="noopener noreferrer" aria-label="Mbumah Hardware on Instagram" title="Instagram"><svg class="icon icon-sm"><use href="#i-instagram"/></svg></a>
@@ -1093,7 +1297,9 @@ ul{list-style:none}
         <li><a href="#catalogue">Catalogue</a></li>
         <li><a href="#estimators">Estimators</a></li>
         <li><a href="#delivery">Delivery</a></li>
+        <li><a href="#location">Find Us and Map</a></li>
         <li><a href="#socials">Social Gallery</a></li>
+        <li><a href="#reviews">Client Remarks</a></li>
         <li><a href="#request">Request a Quotation</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
@@ -1115,7 +1321,7 @@ ul{list-style:none}
         <li><a href="tel:+254759963601"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 759 963 601</a></li>
         <li><a href="mailto:info@mbumahhardware.co.ke"><svg class="icon icon-sm"><use href="#i-mail"/></svg> info@mbumahhardware.co.ke</a></li>
         <li><span style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-clock"/></svg> Mon to Sat 7AM to 7PM</span></li>
-        <li><span style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Serving Kenya Nationwide</span></li>
+        <li><a href="#location" style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Serving Juja &amp; Environs</a></li>
         <li><a href="https://wa.me/254795191909" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> WhatsApp Sales</a></li>
         <li><a href="https://whatsapp.com/channel/0029Vb9Moad5Ejy5aDbMLs0t" target="_blank" rel="noopener noreferrer"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> WhatsApp Channel</a></li>
         <li><a href="https://www.tiktok.com/@mbumah_hardware_juja" target="_blank" rel="noopener noreferrer"><svg class="icon icon-sm"><use href="#i-tiktok"/></svg> TikTok</a></li>
@@ -1181,7 +1387,12 @@ ul{list-style:none}
 "use strict";
 var WA_NUMBER = "254795191909";
 var WA_LINK = "https://wa.me/" + WA_NUMBER;
+/* Yard pin for the Find Us map: the exact Mbumah Hardware Google Maps place
+   (same place as delivery-request.html). To move the pin, change these
+   coordinates and update the iframe src plus the map-actions links in the HTML. */
+var MAP_YARD = { lat: -1.1483165, lng: 37.0609671 };
 var STORE_KEY = "mbumah_cart";
+var REMARK_KEY = "mbumah_remarks";
 
 /* Records API hook: collection quote_items for deployment persistence */
 var RECORDS = {
@@ -1195,6 +1406,21 @@ var RECORDS = {
         .catch(function(e){ console.warn("[records] create failed:", e); });
     }
     console.info("[records] quote_items create (queued, endpoint not configured):", payload);
+    return Promise.resolve();
+  }
+};
+/* Records API hook: collection client_remarks for deployment persistence */
+var REMARKS_RECORDS = {
+  collection: "client_remarks",
+  backendVersion: "v1.0-mbumah-final",
+  endpoint: window.MBUMAH_RECORDS_ENDPOINT || null,
+  create: function(record){
+    var payload = { collection: this.collection, record: Object.assign({ createdAt: new Date().toISOString() }, record) };
+    if (this.endpoint) {
+      return fetch(this.endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+        .catch(function(e){ console.warn("[records] create failed:", e); });
+    }
+    console.info("[records] client_remarks create (queued, endpoint not configured):", payload);
     return Promise.resolve();
   }
 };
@@ -1215,8 +1441,8 @@ var PRODUCTS = [
   { id:"p11", name:"Deformed Bar Y16", brand:"Apex Steel", sku:"MB-STL-Y16", unit:"12m length", use:"Heavy structural work", cat:"Steel", img:"assets/steel-y12.jpg" },
   { id:"p12", name:"Colour Mabati Box Profile", brand:"MRM Mabati", sku:"MB-MAB-012", unit:"Sheet, custom cut", use:"Roofing, facades", cat:"Roofing", img:"assets/mabati.jpg" }
 ];
-var COUNTIES = ["Baringo","Bomet","Bungoma","Busia","Elgeyo Marakwet","Embu","Garissa","Homa Bay","Isiolo","Kajiado","Kakamega","Kericho","Kiambu","Kilifi","Kirinyaga","Kisii","Kisumu","Kitui","Kwale","Laikipia","Lamu","Machakos","Makueni","Mandera","Marsabit","Meru","Migori","Mombasa","Murang'a","Nairobi","Nakuru","Nandi","Narok","Nyamira","Nyandarua","Nyeri","Samburu","Siaya","Taita Taveta","Tana River","Tharaka Nithi","Trans Nzoia","Turkana","Uasin Gishu","Vihiga","Wajir","West Pokot"];
-var SLIDE_TAGS = ["Everything You Need to Build","From Yard to Site Direct","Your Building Partner Across Kenya"];
+var DELIVERY_AREAS = ["Juja Town","Gachororo","Kalimoni","Juja Farm","Witeithie","Mangu","Kenyatta Road","Other Area Around Juja"];
+var SLIDE_TAGS = ["Everything You Need to Build","From Yard to Site Direct","Your Building Partner in Juja"];
 
 /* State */
 var cart = [];
@@ -1516,12 +1742,15 @@ function buildWaText(ref){
 document.addEventListener("DOMContentLoaded", function(){
   loadCart();
 
-  /* Counties */
-  var countySel = $("#fCounty");
-  COUNTIES.forEach(function(c){
-    var o = document.createElement("option");
-    o.textContent = c; o.value = c;
-    countySel.appendChild(o);
+  /* Delivery areas around Juja: quotation form + remarks form */
+  ["#fCounty", "#rArea"].forEach(function(id){
+    var sel = $(id);
+    if (!sel) return;
+    DELIVERY_AREAS.forEach(function(c){
+      var o = document.createElement("option");
+      o.textContent = c; o.value = c;
+      sel.appendChild(o);
+    });
   });
 
   /* Date min today */
@@ -1752,6 +1981,110 @@ document.addEventListener("DOMContentLoaded", function(){
 
   /* Year */
   $("#year").textContent = new Date().getFullYear();
+
+  /* Find Us: client pin tool (Leaflet, keyless OSM tiles) */
+  var pinMapEl = $("#pinMap");
+  if (typeof L !== "undefined" && pinMapEl) {
+    var pinMap = L.map(pinMapEl, { scrollWheelZoom: false }).setView([MAP_YARD.lat, MAP_YARD.lng], 16);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(pinMap);
+    var yardIcon = L.divIcon({ className: "yard-pin", html: '<span class="yard-pin-dot"></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
+    var yardMarker = L.marker([MAP_YARD.lat, MAP_YARD.lng], { icon: yardIcon }).addTo(pinMap);
+    yardMarker.bindTooltip("Mbumah Hardware Yard");
+    var pinIcon = L.divIcon({ className: "client-pin", html: '<span class="client-pin-dot"></span>', iconSize: [20, 20], iconAnchor: [10, 10] });
+    var clientPin = null;
+    var setPin = function(lat, lng){
+      if (clientPin) { clientPin.setLatLng([lat, lng]); } else { clientPin = L.marker([lat, lng], { icon: pinIcon }).addTo(pinMap); }
+      var coords = lat.toFixed(5) + ", " + lng.toFixed(5);
+      $("#pinOut").hidden = false;
+      $("#pinCoords").textContent = coords;
+      var glink = "https://maps.google.com/?q=" + lat + "," + lng;
+      var text = "Mbumah Hardware delivery pin\nPin: " + coords + "\nMap: " + glink + "\nPlease quote delivery to this pin.";
+      $("#pinWa").href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text);
+      $("#pinCopy").setAttribute("data-coords", coords);
+    };
+    pinMap.on("click", function(e){ setPin(e.latlng.lat, e.latlng.lng); });
+    $("#pinGps").addEventListener("click", function(){
+      if (!navigator.geolocation) { toast("Geolocation is not supported on this device", "error"); return; }
+      toast("Locating you, please wait", "info");
+      navigator.geolocation.getCurrentPosition(function(pos){ setPin(pos.coords.latitude, pos.coords.longitude); }, function(){ toast("Could not read your location, tap the map instead", "error"); });
+    });
+    $("#pinCopy").addEventListener("click", function(){
+      var c = this.getAttribute("data-coords") || "";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(c).then(function(){ toast("Coordinates copied", "success"); }, function(){ toast("Copy failed, note the coordinates instead", "error"); });
+      } else { toast("Copy is not supported here, note the coordinates instead", "info"); }
+    });
+  } else if (pinMapEl) {
+    pinMapEl.innerHTML = '<p class="minimap-fallback">The mini map could not load. Share your delivery pin with sales on WhatsApp instead.</p>';
+    var gpsBtn = $("#pinGps");
+    if (gpsBtn) gpsBtn.hidden = true;
+  }
+
+  /* Client remarks: display + collect feedback around Juja */
+  var remarkCount = $("#rCount");
+  $("#rText").addEventListener("input", function(){ remarkCount.textContent = String(300 - this.value.length); });
+  var ratingValue = 5;
+  function setRating(n){
+    ratingValue = n;
+    $all("#rStars .star-btn").forEach(function(b){
+      var v = parseInt(b.getAttribute("data-star"), 10);
+      b.classList.toggle("on", v <= n);
+      b.setAttribute("aria-checked", String(v === n));
+    });
+  }
+  $all("#rStars .star-btn").forEach(function(b){ b.addEventListener("click", function(){ setRating(parseInt(b.getAttribute("data-star"), 10)); }); });
+  setRating(5);
+  function loadRemarks(){
+    try { var raw = localStorage.getItem(REMARK_KEY); var arr = raw ? JSON.parse(raw) : []; return Array.isArray(arr) ? arr : []; } catch(e){ return []; }
+  }
+  function saveRemarks(arr){ try { localStorage.setItem(REMARK_KEY, JSON.stringify(arr)); } catch(e){} }
+  function starRow(n){
+    var h = "";
+    for (var i = 1; i <= 5; i++) { h += '<svg class="icon' + (i <= n ? " on" : "") + '" aria-hidden="true"><use href="#i-star"/></svg>'; }
+    return h;
+  }
+  function remarkCard(r, own, idx){
+    var initials = r.n.trim().split(/\s+/).map(function(w){ return w.charAt(0); }).slice(0, 2).join("").toUpperCase() || "MB";
+    var when = new Date(r.ts).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" });
+    return '<article class="review-card own">' +
+      '<div class="review-top"><span class="review-stars" role="img" aria-label="Rated ' + r.r + ' out of 5">' + starRow(r.r) + '</span>' +
+      (own ? '<span class="review-side"><span class="review-badge">Your remark</span><button class="review-del" data-remark-del="' + idx + '" aria-label="Delete your remark"><svg class="icon icon-sm"><use href="#i-trash"/></svg></button></span>' : '') +
+      '</div><p class="review-text">' + esc(r.t) + '</p>' +
+      '<div class="review-meta"><span class="review-avatar">' + esc(initials) + '</span><span class="review-who"><b>' + esc(r.n) + '</b><span>' + esc(r.a) + ', ' + when + '</span></span></div></article>';
+  }
+  function renderOwnRemarks(){
+    var mine = loadRemarks();
+    $all("#reviewsList .review-card.own").forEach(function(el){ el.remove(); });
+    var html = mine.map(function(r, i){ return remarkCard(r, true, i); }).join("");
+    if (html) $("#reviewsList").insertAdjacentHTML("afterbegin", html);
+  }
+  renderOwnRemarks();
+  $("#reviewsList").addEventListener("click", function(e){
+    var del = e.target.closest("[data-remark-del]");
+    if (!del) return;
+    var arr = loadRemarks();
+    arr.splice(parseInt(del.getAttribute("data-remark-del"), 10), 1);
+    saveRemarks(arr);
+    renderOwnRemarks();
+    toast("Your remark was removed", "info");
+  });
+  $("#remarkForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var n = $("#rName").value.trim();
+    var t = $("#rText").value.trim();
+    if (!n) { toast("Please enter your name", "error"); $("#rName").focus(); return; }
+    if (!t || t.length < 4) { toast("Please write a short remark first", "error"); $("#rText").focus(); return; }
+    var arr = loadRemarks();
+    var rec = { n: n, a: $("#rArea").value || "Juja Town", r: ratingValue, t: t, ts: Date.now() };
+    arr.push(rec);
+    saveRemarks(arr);
+    REMARKS_RECORDS.create(rec);
+    $("#reviewsList").insertAdjacentHTML("afterbegin", remarkCard(rec, true, arr.length - 1));
+    this.reset();
+    remarkCount.textContent = "300";
+    setRating(5);
+    toast("Thank you for your remarks!", "success");
+  });
 
   /* Health check */
   window.MBUMAH_HEALTH = function(){
