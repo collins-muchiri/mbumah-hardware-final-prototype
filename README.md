@@ -1,4 +1,4 @@
-# MBUMAH HARDWARE - Quotation Only Catalogue RFQ Platform
+# MBUMAH HARDWARE: Quotation Only Catalogue RFQ Platform
 
 Final Prototype v1.0. Release tag: v1.0-mbumah-final
 
