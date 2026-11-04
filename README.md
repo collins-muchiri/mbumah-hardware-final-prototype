@@ -13,7 +13,15 @@ Single page quotation-only catalogue. No checkout, no prices: customers browse, 
 - Deployable to any static host (built for Vercel)
 
 ## Structure (19 sections)
-Topbar, Header, Sticky 4-step progress, Sliding hero (3 slides), Quantified strip, Personas, Catalogue with search and category chips, Delivery (Juja coverage chips), Find Us map (Google Maps embed with yard pin + client pin-drop tool), Why Choose Us, Brand Partners, Diaspora, Estimators (wall, roof, paint), Projects, Social Gallery slideshow (auto playing, 8 photos, linked to Instagram, YouTube, Facebook, WhatsApp Channel and TikTok), Client remarks (display + submit form), Request form with live quote list, FAQ, and Footer.
+Topbar, Header, Sticky 4-step progress, Sliding hero (3 slides), Quantified strip, Personas, Master Catalogue (15 categories, ~200 core lines, search, category chips with counts, Show More paging), Delivery (Juja coverage chips), Find Us map (Google Maps embed with yard pin + client pin-drop tool), Why Choose Us, Brand Partners, Diaspora, Estimators (wall, roof, paint), Projects, Social Gallery slideshow (auto playing, 8 photos, linked to Instagram, YouTube, Facebook, WhatsApp Channel and TikTok), Client remarks (display + submit form), Request form with live quote list, FAQ, and Footer.
+
+## Master product catalogue
+- The catalogue mirrors the MBUMAH HARDWARE master product catalogue: 15 categories, about 200 core product lines generated into the PRODUCTS array (searchable by name, brand, SKU, use and category).
+- Categories: Hand Tools & Construction Tools, Building Materials, Nails/Bolts/Nuts & Fasteners, Steel & Metal Products, Roofing Materials, Paints & Painting Accessories, Plumbing Materials, Electrical Materials, Tiles & Flooring, Doors/Locks & Furniture Fittings, Safety Equipment & Protective Wear, Welding & Metalwork Accessories, Fencing & Outdoor Construction, General Hardware & Household, Building Finishing & Accessories.
+- The yard stocks 375+ products across the 15 categories once size and gauge variants are counted; the hero eyebrow, quantified strip and Wide Range card all carry these figures.
+- Product photos are real web images stored in `assets/` (self hosted). The four previously marketed lines (Mattocks, Bed Bolts, Work Gloves, Drawer Handles) each have their own photo.
+- The grid shows 24 cards at a time with a Show More Products button and a Showing X of Y counter. Pricing stays Price on Quotation on every card; there is no checkout.
+- To edit the catalogue: change the items list in `scripts/build_master_catalogue.py`, rerun it to regenerate the PRODUCTS array and category chips, and rerun `scripts/download_catalogue_images.py` for new photos.
 
 ## New delivery details and client remarks page
 The standalone `delivery-request.html` adds a Juja-focused delivery details flow alongside the existing catalogue:
