@@ -72,7 +72,11 @@ Linked in the footer Follow Us block, in the Social Gallery slideshow section (n
 - WhatsApp Channel: https://whatsapp.com/channel/0029Vb9Moad5Ejy5aDbMLs0t
 - TikTok: https://www.tiktok.com/@mbumah_hardware_juja
 
-Business phone: +254 759 963 601 (topbar, footer contact, form example, JSON-LD). WhatsApp Sales chat stays on 0795 191 909.
+Business contacts (client confirmed):
+- Phone 1: +254 759 963 601, call and WhatsApp (tel link plus a WhatsApp chat chip in the topbar, Find Us card and footer)
+- Phone 2: +254 795 191 909, call and WhatsApp (same treatment; also the WhatsApp Sales line used by the quote list, pin share, remarks and delivery request flows)
+- Email: mbumahhardware@gmail.com (topbar, Find Us card, footer, JSON-LD)
+- JSON-LD carries both numbers as `contactPoint` sales entries with the Gmail email.
 
 Slideshow behaviour: auto advances every 4 seconds, crossfade 700 ms, Ken Burns zoom, pauses on hover, when the tab is hidden and when scrolled out of view, dots and arrows, tap a caption chip to open the corresponding social platform.
 

@@ -27,7 +27,11 @@
   "image": "assets/logo.jpeg",
   "description": "Wholesale and retail building materials in Juja, quoted on request and delivered to site around Juja and the neighbouring estates.",
   "telephone": "+254759963601",
-  "email": "info@mbumahhardware.co.ke",
+  "contactPoint": [
+    { "@type": "ContactPoint", "telephone": "+254759963601", "contactType": "sales", "areaServed": "KE", "availableLanguage": ["en", "sw"] },
+    { "@type": "ContactPoint", "telephone": "+254795191909", "contactType": "sales", "areaServed": "KE", "availableLanguage": ["en", "sw"] }
+  ],
+  "email": "mbumahhardware@gmail.com",
   "priceRange": "Quotation only",
   "sameAs": [
     "https://www.instagram.com/mbumahhardware",
@@ -499,6 +503,10 @@ ul{list-style:none}
 .loc-rows{margin-top:14px;display:grid;gap:12px;font-size:14px}
 .loc-rows li{display:flex;align-items:flex-start;gap:10px}
 .loc-rows .icon{color:var(--orange);margin-top:2px}
+/* WhatsApp chat chip beside each phone number, both client lines are on WhatsApp */
+a.wa-chip{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(37,211,102,.15);color:#159447;flex:0 0 auto;transition:background .15s ease,color .15s ease}
+a.wa-chip .icon-sm{width:14px;height:14px;color:inherit;margin:0}
+a.wa-chip:hover{background:#22b357;color:#fff}
 .loc-note{margin-top:14px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:10px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--navy)}
 .minimap{height:210px;border-radius:10px;border:1px solid var(--line);overflow:hidden;margin-top:14px;position:relative;z-index:0;background:var(--bg)}
 .minimap-fallback{padding:18px;font-size:13px;color:var(--muted)}
@@ -631,7 +639,8 @@ ul{list-style:none}
   <div class="container topbar-inner">
     <div class="topbar-left">
       <a href="tel:+254759963601" class="inline-flex" style="display:inline-flex;align-items:center;gap:6px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 759 963 601</a>
-      <a href="mailto:info@mbumahhardware.co.ke" style="display:inline-flex;align-items:center;gap:6px"><svg class="icon icon-sm"><use href="#i-mail"/></svg> info@mbumahhardware.co.ke</a>
+      <a href="tel:+254795191909" class="inline-flex" style="display:inline-flex;align-items:center;gap:6px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 795 191 909</a>
+      <a href="mailto:mbumahhardware@gmail.com" style="display:inline-flex;align-items:center;gap:6px"><svg class="icon icon-sm"><use href="#i-mail"/></svg> mbumahhardware@gmail.com</a>
       <span style="display:inline-flex;align-items:center;gap:6px"><svg class="icon icon-sm"><use href="#i-clock"/></svg> Mon to Sat 7AM to 7PM</span>
     </div>
     <div class="topbar-right" style="display:flex;gap:8px">
@@ -892,8 +901,9 @@ ul{list-style:none}
           <ul class="loc-rows">
             <li><svg class="icon icon-sm"><use href="#i-pin"/></svg> Juja, Kiambu County, Kenya</li>
             <li><svg class="icon icon-sm"><use href="#i-clock"/></svg> Mon to Sat, 7AM to 7PM</li>
-            <li><a href="tel:+254759963601" style="display:inline-flex;align-items:center;gap:10px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 759 963 601</a></li>
-            <li><a href="https://wa.me/254795191909" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> WhatsApp Sales</a></li>
+            <li><a href="tel:+254759963601" style="display:inline-flex;align-items:center;gap:10px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 759 963 601</a><a class="wa-chip" href="https://wa.me/254759963601" target="_blank" rel="noopener" aria-label="WhatsApp 0759 963 601" title="Chat on WhatsApp"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg></a></li>
+            <li><a href="tel:+254795191909" style="display:inline-flex;align-items:center;gap:10px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 795 191 909</a><a class="wa-chip" href="https://wa.me/254795191909" target="_blank" rel="noopener" aria-label="WhatsApp 0795 191 909" title="Chat on WhatsApp"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg></a></li>
+            <li><a href="mailto:mbumahhardware@gmail.com" style="display:inline-flex;align-items:center;gap:10px"><svg class="icon icon-sm"><use href="#i-mail"/></svg> mbumahhardware@gmail.com</a></li>
           </ul>
           <p class="loc-note">Send your list ahead and collect at the yard, or request same day delivery around Juja.</p>
         </div>
@@ -1357,11 +1367,11 @@ ul{list-style:none}
     <div>
       <h4>Contact</h4>
       <ul>
-        <li><a href="tel:+254759963601"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 759 963 601</a></li>
-        <li><a href="mailto:info@mbumahhardware.co.ke"><svg class="icon icon-sm"><use href="#i-mail"/></svg> info@mbumahhardware.co.ke</a></li>
+        <li style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><a href="tel:+254759963601" style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 759 963 601</a><a class="wa-chip" href="https://wa.me/254759963601" target="_blank" rel="noopener" aria-label="WhatsApp 0759 963 601" title="Chat on WhatsApp"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg></a></li>
+        <li style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><a href="tel:+254795191909" style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-phone"/></svg> +254 795 191 909</a><a class="wa-chip" href="https://wa.me/254795191909" target="_blank" rel="noopener" aria-label="WhatsApp 0795 191 909" title="Chat on WhatsApp"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg></a></li>
+        <li><a href="mailto:mbumahhardware@gmail.com" style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-mail"/></svg> mbumahhardware@gmail.com</a></li>
         <li><span style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-clock"/></svg> Mon to Sat 7AM to 7PM</span></li>
         <li><a href="#location" style="display:inline-flex;align-items:center;gap:8px"><svg class="icon icon-sm"><use href="#i-pin"/></svg> Serving Juja &amp; Environs</a></li>
-        <li><a href="https://wa.me/254795191909" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> WhatsApp Sales</a></li>
         <li><a href="https://whatsapp.com/channel/0029Vb9Moad5Ejy5aDbMLs0t" target="_blank" rel="noopener noreferrer"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> WhatsApp Channel</a></li>
         <li><a href="https://www.tiktok.com/@mbumah_hardware_juja" target="_blank" rel="noopener noreferrer"><svg class="icon icon-sm"><use href="#i-tiktok"/></svg> TikTok</a></li>
       </ul>
