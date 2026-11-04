@@ -8,7 +8,7 @@ Single page quotation-only catalogue. No checkout, no prices: customers browse, 
 - Single `index.html`, embedded CSS and vanilla JS, no build step
 - Poppins headings, Inter body, navy #0F2942, orange #FF8C1A
 - Quote list persisted in localStorage key `mbumah_cart`
-- Client remarks persisted in localStorage key `mbumah_remarks`
+- Client remarks persisted in localStorage key `mbumah_remarks`; new submissions are held as pending until the owner approves them
 - Records API hooks (collections `quote_items` and `client_remarks`) ready for deployment persistence
 - Deployable to any static host (built for Vercel)
 
@@ -47,8 +47,14 @@ Delivery location is Juja and Environs: Juja Town, Gachororo, Kalimoni, Juja Far
 
 ## Client remarks on the home page
 - Section 16 shows seeded remarks from clients around Juja (contractor, reseller, home builder, diaspora). Edit the four article cards in `#reviewsList` to replace them with real client feedback.
-- Share Your Remarks form: name, area (Juja delivery areas), 1 to 5 star rating, remarks up to 300 characters. Submissions appear instantly with a Your remark badge and delete control, are stored on the visitor device (localStorage `mbumah_remarks`) and queued through the `client_remarks` records hook when an endpoint is configured.
-- A WhatsApp alternative link lets clients send feedback straight to sales. For delivery instructions plus remarks in one WhatsApp draft, `delivery-request.html` is linked from the Pin Your Site card.
+- Share Your Remarks form: name, area (Juja delivery areas), 1 to 5 star rating, remarks up to 300 characters. Submissions are NOT posted publicly. Each one is stored with status `pending`, listed only to the sender under the form as Awaiting owner approval (with a withdraw control) and queued through the `client_remarks` records hook when an endpoint is configured. The public feed shows only the seeded cards and remarks the owner has approved.
+- A WhatsApp alternative link lets clients send remarks straight to the owner. For delivery instructions plus remarks in one WhatsApp draft, `delivery-request.html` is linked from the Pin Your Site card.
+
+## Owner remark approval workflow
+- Remarks stay private until the owner approves them. Pending remarks are never rendered in the Client Remarks feed.
+- Owner panel: open the site with `#owner-review` in the address bar (for example `https://mbumah-hardware-final.vercel.app/#owner-review`). The panel lists every pending remark with the client name, area, rating and date.
+- Approve and Post moves the remark into the Client Remarks feed on that device with a Your remark badge; Decline removes it. Close the panel with the X button, the backdrop or Escape.
+- Remarks submitted on other devices reach the owner through the `client_remarks` records endpoint once configured, or through the WhatsApp link under the form. To publish an approved remark site-wide, copy its text into one of the seeded article cards in `#reviewsList`.
 
 ## Social profiles
 Linked in the footer Follow Us block, in the Social Gallery slideshow section (nav: Socials) and in the LocalBusiness JSON-LD schema (`sameAs`):

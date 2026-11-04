@@ -546,8 +546,29 @@ ul{list-style:none}
 .wa-alt{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px;font-size:13px;color:var(--muted)}
 .wa-alt a{color:var(--navy);font-weight:600;display:inline-flex;align-items:center;gap:7px;vertical-align:middle}
 .wa-alt a:hover{color:var(--orange)}
+/* Remarks approval flow */
+.pending-box{margin-top:16px;border:1px dashed #FDBA74;background:#FFFBF5;border-radius:12px;padding:14px 16px}
+.pending-box h4{font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:7px}
+.pending-box h4 .icon-sm{color:var(--orange)}
+.pending-sub{font-size:12px;color:var(--muted);margin:3px 0 10px}
+.pending-item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.pending-item:last-child{margin-bottom:0}
+.pending-item p{font-size:13px;color:var(--ink)}
+.pending-meta{font-size:11.5px;color:var(--muted);display:block;margin-top:2px}
+.badge-wait{flex-shrink:0;background:#FFF7ED;border:1px solid #FED7AA;color:#9A3412;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;padding:4px 9px;white-space:nowrap}
+.owner-row{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:var(--surface)}
+.owner-row .review-text{margin:8px 0 10px}
+.owner-row .review-meta{margin-top:0;margin-bottom:12px}
+.owner-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.owner-approve{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s,color .15s;font-family:inherit}
+.owner-approve:hover{background:var(--orange);color:var(--navy)}
+.owner-decline{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.owner-decline:hover{border-color:var(--red);color:var(--red);background:#FEF2F2}
+.owner-empty{color:var(--muted);font-size:14px;background:var(--badge-bg);border:1px dashed var(--badge-border);border-radius:10px;padding:18px;text-align:center}
+.owner-h-icon{color:var(--orange);width:22px;height:22px;vertical-align:-4px;margin-right:4px}
+.modal-body .form-sub{font-size:13px;color:var(--muted);margin:6px 0 14px}
 @media (max-width:1024px){.reviews-grid{grid-template-columns:1fr}.reviews-list{grid-template-columns:1fr 1fr}}
-@media (max-width:640px){.reviews-list{grid-template-columns:1fr}}
+@media (max-width:640px){.reviews-list{grid-template-columns:1fr}.badge-wait{display:none}}
 </style>
 </head>
 <body>
@@ -1112,7 +1133,7 @@ ul{list-style:none}
     <div class="section-head center reveal">
       <span class="kicker">Client Remarks</span>
       <h2>What Clients Around Juja Say</h2>
-      <p>Honest remarks from contractors, resellers and home builders we deliver to around Juja. Worked with us? Share your remarks below.</p>
+      <p>Honest remarks from contractors, resellers and home builders we deliver to around Juja. Worked with us? Share your remarks below; the owner reads every remark and approves it before it is posted.</p>
     </div>
     <div class="reviews-grid">
       <div class="reviews-list" id="reviewsList" aria-live="polite">
@@ -1139,7 +1160,7 @@ ul{list-style:none}
       </div>
       <div class="review-form-card reveal">
         <h3>Share Your Remarks</h3>
-        <p class="form-sub">Tell other clients around Juja about your experience with our team.</p>
+        <p class="form-sub">Tell the owner about your experience with our team. Remarks are posted only after the owner approves them.</p>
         <form id="remarkForm" novalidate>
           <div class="form-row">
             <div class="field"><label for="rName">Your name <span class="req">*</span></label><input type="text" id="rName" name="rName" autocomplete="name" required placeholder="Jane Wanjiku"></div>
@@ -1160,10 +1181,15 @@ ul{list-style:none}
             <textarea id="rText" name="rText" rows="4" maxlength="300" required placeholder="How was the quotation, the delivery and the materials?"></textarea>
             <p class="char-note"><span id="rCount">300</span> characters left</p>
           </div>
-          <button type="submit" class="btn btn-orange btn-block"><svg class="icon icon-sm"><use href="#i-send"/></svg> Post My Remarks</button>
-          <p class="privacy-note">Your remarks are saved on this device and shared with our team for the Juja service record. We never publish your phone number.</p>
+          <button type="submit" class="btn btn-orange btn-block"><svg class="icon icon-sm"><use href="#i-send"/></svg> Send for Owner Approval</button>
+          <p class="privacy-note">Your remarks go to the owner for review and are only posted on this page after approval. We never publish your phone number.</p>
         </form>
-        <p class="wa-alt">Prefer WhatsApp? <a href="https://wa.me/254795191909?text=Hi%20Mbumah%20Hardware%2C%20I%20would%20like%20to%20share%20feedback%20about%20my%20delivery%3A%20" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> Send feedback to sales</a></p>
+        <div class="pending-box" id="rPendingBox" hidden aria-live="polite">
+          <h4><svg class="icon icon-sm"><use href="#i-clock"/></svg> Awaiting owner approval</h4>
+          <p class="pending-sub">These remarks are not posted yet. They stay on this device until the owner approves them.</p>
+          <div id="rPendingList"></div>
+        </div>
+        <p class="wa-alt">Prefer WhatsApp? <a href="https://wa.me/254795191909?text=Hi%20Mbumah%20Hardware%2C%20I%20would%20like%20to%20share%20feedback%20about%20my%20delivery%3A%20" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> Send your remarks to the owner</a></p>
       </div>
     </div>
   </div>
@@ -1364,6 +1390,20 @@ ul{list-style:none}
       <table class="spec-table"><tbody id="specTable"></tbody></table>
       <div class="modal-foot">Full datasheet and itemised pricing are shared with your official quotation.</div>
       <button class="btn btn-navy btn-block" id="specAdd" style="margin-top:16px"><svg class="icon icon-sm"><use href="#i-plus"/></svg> Add to Quote List</button>
+    </div>
+  </div>
+</div>
+
+<!-- Owner review panel: remarks are only posted publicly after approval here. Add #owner-review to the address bar -->
+<div class="modal" id="ownerModal" role="dialog" aria-modal="true" aria-label="Owner review of client remarks">
+  <div class="overlay show" id="ownerOverlay" style="position:absolute;inset:0;z-index:1"></div>
+  <div class="modal-card">
+    <button class="modal-close" id="ownerClose" aria-label="Close owner review"><svg class="icon"><use href="#i-x"/></svg></button>
+    <div class="modal-body">
+      <h3><svg class="icon owner-h-icon"><use href="#i-shield"/></svg> Owner Remark Review</h3>
+      <p class="form-sub">Nothing is posted publicly before you approve it here. Approve a remark to post it on the Client Remarks feed, or decline to remove it.</p>
+      <div id="ownerQueue"></div>
+      <div class="modal-foot">Owner access: add #owner-review to the page address. Remarks sent from other devices reach you through the client_remarks records endpoint or WhatsApp.</div>
     </div>
   </div>
 </div>
@@ -2044,7 +2084,7 @@ document.addEventListener("DOMContentLoaded", function(){
     return h;
   }
   function remarkCard(r, own, idx){
-    var initials = r.n.trim().split(/\s+/).map(function(w){ return w.charAt(0); }).slice(0, 2).join("").toUpperCase() || "MB";
+    var initials = initialsOf(r.n);
     var when = new Date(r.ts).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" });
     return '<article class="review-card own">' +
       '<div class="review-top"><span class="review-stars" role="img" aria-label="Rated ' + r.r + ' out of 5">' + starRow(r.r) + '</span>' +
@@ -2052,13 +2092,31 @@ document.addEventListener("DOMContentLoaded", function(){
       '</div><p class="review-text">' + esc(r.t) + '</p>' +
       '<div class="review-meta"><span class="review-avatar">' + esc(initials) + '</span><span class="review-who"><b>' + esc(r.n) + '</b><span>' + esc(r.a) + ', ' + when + '</span></span></div></article>';
   }
+  /* Remarks are held as pending and are only posted after the owner approves them */
+  function remarkStatus(r){ return r.status || "approved"; }
+  function initialsOf(n){ return n.trim().split(/\s+/).map(function(w){ return w.charAt(0); }).slice(0, 2).join("").toUpperCase() || "MB"; }
   function renderOwnRemarks(){
-    var mine = loadRemarks();
+    var all = loadRemarks();
     $all("#reviewsList .review-card.own").forEach(function(el){ el.remove(); });
-    var html = mine.map(function(r, i){ return remarkCard(r, true, i); }).join("");
+    var html = all.map(function(r, i){ return remarkStatus(r) === "approved" ? remarkCard(r, true, i) : ""; }).join("");
     if (html) $("#reviewsList").insertAdjacentHTML("afterbegin", html);
   }
+  function pendingItem(r, idx){
+    var when = new Date(r.ts).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" });
+    return '<div class="pending-item"><div><p>' + esc(r.t) + '</p><span class="pending-meta">' + esc(r.n) + ', ' + esc(r.a) + ' \u00b7 ' + r.r + (r.r === 1 ? " star" : " stars") + ' \u00b7 ' + when + '</span></div>' +
+      '<span class="badge-wait">Awaiting approval</span>' +
+      '<button class="review-del" data-pending-del="' + idx + '" aria-label="Withdraw this remark"><svg class="icon icon-sm"><use href="#i-trash"/></svg></button></div>';
+  }
+  function renderPending(){
+    var all = loadRemarks(), html = "";
+    for (var i = all.length - 1; i >= 0; i--) {
+      if (remarkStatus(all[i]) === "pending") html += pendingItem(all[i], i);
+    }
+    $("#rPendingBox").hidden = !html;
+    $("#rPendingList").innerHTML = html;
+  }
   renderOwnRemarks();
+  renderPending();
   $("#reviewsList").addEventListener("click", function(e){
     var del = e.target.closest("[data-remark-del]");
     if (!del) return;
@@ -2068,6 +2126,15 @@ document.addEventListener("DOMContentLoaded", function(){
     renderOwnRemarks();
     toast("Your remark was removed", "info");
   });
+  $("#rPendingList").addEventListener("click", function(e){
+    var del = e.target.closest("[data-pending-del]");
+    if (!del) return;
+    var arr = loadRemarks();
+    arr.splice(parseInt(del.getAttribute("data-pending-del"), 10), 1);
+    saveRemarks(arr);
+    renderPending();
+    toast("Your remark was withdrawn before review", "info");
+  });
   $("#remarkForm").addEventListener("submit", function(e){
     e.preventDefault();
     var n = $("#rName").value.trim();
@@ -2075,16 +2142,73 @@ document.addEventListener("DOMContentLoaded", function(){
     if (!n) { toast("Please enter your name", "error"); $("#rName").focus(); return; }
     if (!t || t.length < 4) { toast("Please write a short remark first", "error"); $("#rText").focus(); return; }
     var arr = loadRemarks();
-    var rec = { n: n, a: $("#rArea").value || "Juja Town", r: ratingValue, t: t, ts: Date.now() };
+    var rec = { n: n, a: $("#rArea").value || "Juja Town", r: ratingValue, t: t, ts: Date.now(), status: "pending" };
     arr.push(rec);
     saveRemarks(arr);
     REMARKS_RECORDS.create(rec);
-    $("#reviewsList").insertAdjacentHTML("afterbegin", remarkCard(rec, true, arr.length - 1));
+    renderPending();
     this.reset();
     remarkCount.textContent = "300";
     setRating(5);
-    toast("Thank you for your remarks!", "success");
+    toast("Thank you! Your remarks were sent to the owner for approval", "success");
   });
+
+  /* Owner review panel: open with #owner-review in the address bar */
+  function ownerRow(r, idx){
+    var when = new Date(r.ts).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" });
+    return '<div class="owner-row">' +
+      '<div class="review-top"><span class="review-stars" role="img" aria-label="Rated ' + r.r + ' out of 5">' + starRow(r.r) + '</span><span class="badge-wait">Pending review</span></div>' +
+      '<p class="review-text">' + esc(r.t) + '</p>' +
+      '<div class="review-meta"><span class="review-avatar">' + esc(initialsOf(r.n)) + '</span><span class="review-who"><b>' + esc(r.n) + '</b><span>' + esc(r.a) + ', ' + when + '</span></span></div>' +
+      '<div class="owner-actions"><button class="owner-approve" data-owner-approve="' + idx + '"><svg class="icon icon-sm"><use href="#i-check"/></svg> Approve and Post</button>' +
+      '<button class="owner-decline" data-owner-decline="' + idx + '"><svg class="icon icon-sm"><use href="#i-x"/></svg> Decline</button></div></div>';
+  }
+  function renderOwnerQueue(){
+    var all = loadRemarks(), html = "", count = 0;
+    for (var i = 0; i < all.length; i++) {
+      if (remarkStatus(all[i]) === "pending") { count++; html += ownerRow(all[i], i); }
+    }
+    $("#ownerQueue").innerHTML = count ? html : '<p class="owner-empty">No remarks are waiting for approval right now.</p>';
+  }
+  function openOwnerPanel(){
+    renderOwnerQueue();
+    $("#ownerModal").classList.add("open");
+    document.body.style.overflow = "hidden";
+    $("#ownerClose").focus();
+  }
+  function closeOwnerPanel(){
+    $("#ownerModal").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  $("#ownerClose").addEventListener("click", closeOwnerPanel);
+  $("#ownerOverlay").addEventListener("click", closeOwnerPanel);
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && $("#ownerModal").classList.contains("open")) closeOwnerPanel();
+  });
+  $("#ownerQueue").addEventListener("click", function(e){
+    var ap = e.target.closest("[data-owner-approve]");
+    var de = e.target.closest("[data-owner-decline]");
+    if (!ap && !de) return;
+    var btn = ap || de;
+    var arr = loadRemarks();
+    var idx = parseInt(btn.getAttribute(ap ? "data-owner-approve" : "data-owner-decline"), 10);
+    if (!arr[idx]) return;
+    if (ap) {
+      arr[idx].status = "approved";
+      arr[idx].approvedTs = Date.now();
+      saveRemarks(arr);
+      renderOwnerQueue(); renderOwnRemarks(); renderPending();
+      toast("Remark approved and posted on the feed", "success");
+    } else {
+      arr.splice(idx, 1);
+      saveRemarks(arr);
+      renderOwnerQueue(); renderPending();
+      toast("Remark declined and removed", "info");
+    }
+  });
+  function checkOwnerHash(){ if (location.hash.replace("#", "") === "owner-review") openOwnerPanel(); }
+  window.addEventListener("hashchange", checkOwnerHash);
+  checkOwnerHash();
 
   /* Health check */
   window.MBUMAH_HEALTH = function(){
