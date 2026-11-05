@@ -16,7 +16,7 @@ Single page quotation-only catalogue. No checkout, no prices: customers browse, 
 Topbar, Header, Sticky 4-step progress, Sliding hero (3 slides), Quantified strip, Personas, Master Catalogue (15 categories, ~200 core lines, search, category chips with counts, Show More paging), Delivery (Juja coverage chips), Find Us map (Google Maps embed with yard pin + client pin-drop tool), Why Choose Us, Brand Partners, Diaspora, Estimators (wall, roof, paint), Projects, Social Gallery slideshow (auto playing, 8 photos, linked to Instagram, YouTube, Facebook, WhatsApp Channel and TikTok), Client remarks (display + submit form), Request form with live quote list, FAQ, and Footer.
 
 ## Clean URL policy (no fragment addresses)
-- In-page navigation (nav bar, mobile menu, hero buttons, footer links, bottom tab bar, skip link) scrolls smoothly to the section but never appends a fragment to the address bar, so copied or shared addresses always show the clean base URL `https://mbumah-hardware-final.vercel.app/` with no `#home`, `#catalogue` or `#estimators`.
+- In-page navigation (nav bar, mobile menu, hero buttons, footer links, bottom tab bar, skip link) scrolls smoothly to the section but never appends a fragment to the address bar, so copied or shared addresses always show the clean base URL `https://www.mbumahhardware.co.ke/` with no `#home`, `#catalogue` or `#estimators`.
 - Section anchors and their ids stay in the markup for crawlers and accessibility; a shared deep link such as `.../#catalogue` is honoured once (the page scrolls to the catalogue) and the hash is then stripped from the address bar.
 - The functional hash `#owner-review` is excluded from this policy: it keeps working as the owner access trigger (see Owner remark approval workflow).
 - Canonical link and `og:url` already point to the clean base URL without a fragment.
@@ -67,7 +67,7 @@ Delivery location is Juja and Environs: Juja Town, Gachororo, Kalimoni, Juja Far
 
 ## Owner remark approval workflow
 - Remarks stay private until the owner approves them. Pending remarks are never rendered in the Client Remarks feed.
-- Owner panel: open the site with `#owner-review` in the address bar (for example `https://mbumah-hardware-final.vercel.app/#owner-review`). The panel lists every pending remark with the client name, area, rating and date.
+- Owner panel: open the site with `#owner-review` in the address bar (for example `https://www.mbumahhardware.co.ke/#owner-review`). The panel lists every pending remark with the client name, area, rating and date.
 - Approve and Post moves the remark into the Client Remarks feed on that device with a Your remark badge; Decline removes it. Close the panel with the X button, the backdrop or Escape.
 - Remarks submitted on other devices reach the owner through the `client_remarks` records endpoint once configured, or through the WhatsApp link under the form. To publish an approved remark site-wide, copy its text into one of the seeded article cards in `#reviewsList`.
 
@@ -89,3 +89,9 @@ Slideshow behaviour: auto advances every 4 seconds, crossfade 700 ms, Ken Burns 
 
 ## Deploy
 `vercel deploy --prod`
+
+## Domains and redirects
+- Primary domain: `https://www.mbumahhardware.co.ke`. Canonical link, `og:url` and the JSON-LD `url` all point here.
+- Apex `mbumahhardware.co.ke` redirects to `https://www.mbumahhardware.co.ke` (Vercel dashboard domain redirect).
+- The legacy `https://mbumah-hardware-final.vercel.app` host 308 redirects every path to the primary domain through the host match in `vercel.json`.
+- In-page navigation never leaves `#section` fragments in the address bar; deep links are honoured once, then cleaned.
