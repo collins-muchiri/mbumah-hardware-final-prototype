@@ -87,6 +87,13 @@ Business contacts (client confirmed):
 
 Slideshow behaviour: auto advances every 4 seconds, crossfade 700 ms, Ken Burns zoom, pauses on hover, when the tab is hidden and when scrolled out of view, dots and arrows, tap a caption chip to open the corresponding social platform.
 
+## Request channels: email push + WhatsApp
+- On submit the request is pushed automatically to the yard inbox `mbumahhardware@gmail.com` through FormSubmit (`https://formsubmit.co/ajax/...`), no backend needed. The first ever submission makes FormSubmit send a one-time activation email to that inbox; click the activation link once and every later request lands in the inbox on its own.
+- The email carries the reference, name, phone, client email as reply-to, company, delivery area, date needed, the numbered product list, notes and the BOQ file as a real attachment (up to 4 MB). If the multipart post is blocked the page retries as JSON, and the success panel always shows the true email status.
+- The WhatsApp output stays numbered, `1. Product Name - Quantity: xx`, and is built straight from the live quote list so every product on the quotation is included; anything typed by hand into the products box is preserved as extra items.
+- `Continue on WhatsApp` opens the chat with the full request prefilled. A WhatsApp chat link cannot carry file attachments, so the BOQ travels by email and the message asks the client to attach it in the chat as well.
+- Generic WhatsApp chat links (WhatsApp Sales button and the chat chips beside each phone number) open with the client's current quotation list included when one exists, otherwise with a simple enquiry greeting.
+
 ## Deploy
 `vercel deploy --prod`
 

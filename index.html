@@ -1257,6 +1257,7 @@ a.wa-chip:hover{background:#22b357;color:#fff}
             </div>
             <input type="file" id="fFile" accept=".pdf,.xls,.xlsx,.csv" hidden>
             <p class="file-note" id="fileNote"><svg class="icon icon-sm"><use href="#i-check"/></svg> <span id="fileName"></span></p>
+            <p class="hint">Your BOQ is emailed to our yard together with your request. A WhatsApp chat link cannot carry files, so also attach it in the WhatsApp chat when it opens.</p>
           </div>
           <div class="check-row">
             <input type="checkbox" id="fWa" name="whatsapp" checked>
@@ -1270,6 +1271,7 @@ a.wa-chip:hover{background:#22b357;color:#fff}
           <h3>Request Received</h3>
           <p>Your quotation reference:</p>
           <div class="sfq-ref" id="sfqRef">MBM-0000</div>
+          <p class="sfq-email" id="emailStatus" style="font-size:13px;opacity:.75;margin:6px 0 0">Your request is being pushed to our email and WhatsApp.</p>
           <p>Our sales team will confirm itemised pricing and delivery within 30 minutes during working hours, Mon to Sat 7AM to 7PM. Tap below to continue on WhatsApp with your reference and list prefilled.</p>
           <div class="success-actions">
             <a class="btn btn-navy" id="waSend" href="https://wa.me/254795191909" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> Continue on WhatsApp</a>
@@ -1978,15 +1980,21 @@ function addEstimate(kind){
 }
 
 /* Form helpers */
+/* Every product on the quotation reaches WhatsApp: the numbered list is built
+   straight from the live quote list, and anything the client typed by hand
+   (for example pasted BOQ lines) is kept as extra items. */
 function buildWaText(ref){
   var name = $("#fName").value.trim();
   var phone = $("#fPhone").value.trim();
   var company = $("#fCompany").value.trim();
   var county = $("#fCounty").value;
   var date = $("#fDate").value;
-  var products = $("#fProducts").value.trim() || "(no specific items, general enquiry)";
   var notes = $("#fNotes").value.trim();
   var file = $("#fFile").files.length ? $("#fFile").files[0].name : "";
+  var prods = cart.map(function(i, n){ return (n + 1) + ". " + i.name + " - Quantity: " + i.qty; }).join("\n");
+  var typed = $("#fProducts").value.trim();
+  var extra = (typed && prods && typed !== prods) ? typed : "";
+  if (!prods && typed) prods = typed;
   var lines = [
     "Mbumah Hardware Quotation Request",
     "Ref: " + ref,
@@ -1997,10 +2005,50 @@ function buildWaText(ref){
   lines.push("Delivery: " + county);
   if (date) lines.push("Date needed: " + date);
   lines.push("Products:");
-  lines.push(products);
+  lines.push(prods || "(no specific items, general enquiry)");
+  if (extra) { lines.push("Extra items from the client:"); lines.push(extra); }
   if (notes) lines.push("Notes: " + notes);
-  if (file) lines.push("BOQ attached: " + file + " (shared on request)");
+  if (file) lines.push("BOQ file: " + file + " (sent with our email copy; WhatsApp cannot carry files, so attach it in this chat too)");
   return lines.join("\n");
+}
+
+/* Email push: the same request is delivered to the yard inbox automatically.
+   The BOQ file rides along as a real email attachment (up to 4 MB). */
+function sendRequestEmail(ref){
+  var status = $("#emailStatus");
+  var products = $("#fProducts").value.trim() || "(no specific items, general enquiry)";
+  var file = $("#fFile").files.length ? $("#fFile").files[0] : null;
+  var clientEmail = $("#fEmail").value.trim();
+  var fd = new FormData();
+  fd.append("_subject", "New Quote Request " + ref + " from " + ($("#fName").value.trim() || "the website"));
+  fd.append("_template", "table");
+  fd.append("_captcha", "false");
+  fd.append("Reference", ref);
+  fd.append("Name", $("#fName").value.trim());
+  fd.append("Phone", $("#fPhone").value.trim());
+  if (clientEmail) { fd.append("Client_email", clientEmail); fd.append("_replyto", clientEmail); }
+  fd.append("Company_Site", $("#fCompany").value.trim() || "-");
+  fd.append("Delivery_area", $("#fCounty").value || "-");
+  fd.append("Date_needed", $("#fDate").value || "-");
+  fd.append("Products", products);
+  fd.append("Notes", $("#fNotes").value.trim() || "-");
+  if (file && file.size <= 4 * 1024 * 1024) fd.append("BOQ_attachment", file, file.name);
+  fd.append("Page", location.href);
+  var url = "https://formsubmit.co/ajax/mbumahhardware@gmail.com";
+  var pending = "Email copy pending. Reach us on WhatsApp or mbumahhardware@gmail.com with ref " + ref + ".";
+  fetch(url, { method: "POST", body: fd }).then(function(r){ return r.json(); }).then(function(res){
+    status.textContent = (res && res.success === "true")
+      ? "A copy of this request was emailed to mbumahhardware@gmail.com" + (file && file.size <= 4 * 1024 * 1024 ? " with your BOQ attached" : "") + "."
+      : pending;
+  }).catch(function(){
+    fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ _subject: "New Quote Request " + ref, _captcha: "false", Reference: ref, Name: $("#fName").value.trim(), Phone: $("#fPhone").value.trim(), Delivery_area: $("#fCounty").value || "-", Products: products, Notes: $("#fNotes").value.trim() || "-" }) })
+      .then(function(r){ return r.json(); }).then(function(res){
+        status.textContent = (res && res.success === "true") ? "A copy of this request was emailed to mbumahhardware@gmail.com." : pending;
+      }).catch(function(){
+        status.textContent = "The email service could not be reached. Continue on WhatsApp or email mbumahhardware@gmail.com with ref " + ref + ".";
+      });
+  });
 }
 
 /* Init */
@@ -2180,7 +2228,7 @@ document.addEventListener("DOMContentLoaded", function(){
   fileInput.addEventListener("change", function(){
     if (fileInput.files.length) {
       var f = fileInput.files[0];
-      $("#fileName").textContent = "BOQ attached: " + f.name + " (" + Math.round(f.size/1024) + " KB)";
+      $("#fileName").textContent = "BOQ attached: " + f.name + " (" + Math.round(f.size/1024) + " KB)" + (f.size > 4 * 1024 * 1024 ? " - too large for the email attachment, please also share it in the WhatsApp chat" : "");
       $("#fileNote").classList.add("show");
     }
   });
@@ -2204,6 +2252,7 @@ document.addEventListener("DOMContentLoaded", function(){
       $("#successPanel").classList.add("show");
       $("#sfqRef").textContent = ref;
       $("#waSend").href = WA_LINK + "?text=" + encodeURIComponent(buildWaText(ref));
+      sendRequestEmail(ref);
       setStep(4);
       toast("Request sent. Reference " + ref, "success");
     }, 900);
@@ -2213,7 +2262,26 @@ document.addEventListener("DOMContentLoaded", function(){
     $("#fileNote").classList.remove("show");
     $("#quoteForm").style.display = "";
     $("#successPanel").classList.remove("show");
+    $("#emailStatus").textContent = "";
     renderCart();
+  });
+
+  /* WhatsApp chat links carry the current quotation so every product reaches sales */
+  $all('a[href^="https://wa.me/"]').forEach(function(a){
+    if (a.id === "waSend" || a.id === "pinWa") return;
+    if (a.href.indexOf("?text=") !== -1) return;
+    a.addEventListener("click", function(){
+      var base = a.href.split("?")[0];
+      var text;
+      if (cart.length) {
+        text = "Hi Mbumah Hardware, I am browsing your catalogue. My quotation so far:\n" +
+          cart.map(function(i, n){ return (n + 1) + ". " + i.name + " - Quantity: " + i.qty; }).join("\n") +
+          "\nPlease confirm availability and pricing.";
+      } else {
+        text = "Hi Mbumah Hardware, I would like to make an enquiry.";
+      }
+      a.href = base + "?text=" + encodeURIComponent(text);
+    });
   });
 
   /* FAQ */
