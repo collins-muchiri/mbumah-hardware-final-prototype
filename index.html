@@ -2447,5 +2447,58 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 })();
 </script>
+<script>
+/* Clean URL policy: in-page navigation must not leave #section fragments in
+   the address bar, so shared or copied addresses always show the base URL
+   (https://mbumah-hardware-final.vercel.app/) with no #home, #catalogue,
+   #estimators and similar fragments. Section links still scroll smoothly;
+   a shared deep link is honoured once, then the hash is stripped from the
+   address bar. The functional owner access hash (#owner-review) is excluded
+   from cleaning so the owner panel flow keeps working. */
+(function(){
+  var KEEP_HASH = "owner-review";
+  function currentHash(){ return location.hash.replace(/^#/, ""); }
+  function isKept(h){ return h === KEEP_HASH; }
+  function cleanAddressBar(){
+    if (currentHash() && !isKept(currentHash())) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+  }
+  function scrollToSection(id){
+    var el = document.getElementById(id);
+    if (!el) return false;
+    if (el.getAttribute("tabindex") === null) el.setAttribute("tabindex", "-1");
+    try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    return true;
+  }
+  /* Anchor clicks scroll in place; no #fragment is appended to the address */
+  document.addEventListener("click", function(e){
+    if (!e.target.closest) return;
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = (a.getAttribute("href") || "").slice(1);
+    if (!id || isKept(id)) return;
+    if (scrollToSection(id)) e.preventDefault();
+  });
+  /* Typed or shared section hashes scroll once, then the bar is cleaned */
+  function handleDeepLink(){
+    var h = currentHash();
+    if (!h || isKept(h)) return;
+    if (scrollToSection(h)) cleanAddressBar();
+  }
+  window.addEventListener("hashchange", function(){
+    var h = currentHash();
+    if (!h || isKept(h)) return;
+    setTimeout(cleanAddressBar, 0);
+  });
+  if (document.readyState === "complete") {
+    setTimeout(handleDeepLink, 120);
+  } else {
+    window.addEventListener("load", function(){ setTimeout(handleDeepLink, 120); });
+  }
+})();
+</script>
 </body>
 </html>

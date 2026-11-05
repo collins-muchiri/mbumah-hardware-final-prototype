@@ -15,6 +15,12 @@ Single page quotation-only catalogue. No checkout, no prices: customers browse, 
 ## Structure (19 sections)
 Topbar, Header, Sticky 4-step progress, Sliding hero (3 slides), Quantified strip, Personas, Master Catalogue (15 categories, ~200 core lines, search, category chips with counts, Show More paging), Delivery (Juja coverage chips), Find Us map (Google Maps embed with yard pin + client pin-drop tool), Why Choose Us, Brand Partners, Diaspora, Estimators (wall, roof, paint), Projects, Social Gallery slideshow (auto playing, 8 photos, linked to Instagram, YouTube, Facebook, WhatsApp Channel and TikTok), Client remarks (display + submit form), Request form with live quote list, FAQ, and Footer.
 
+## Clean URL policy (no fragment addresses)
+- In-page navigation (nav bar, mobile menu, hero buttons, footer links, bottom tab bar, skip link) scrolls smoothly to the section but never appends a fragment to the address bar, so copied or shared addresses always show the clean base URL `https://mbumah-hardware-final.vercel.app/` with no `#home`, `#catalogue` or `#estimators`.
+- Section anchors and their ids stay in the markup for crawlers and accessibility; a shared deep link such as `.../#catalogue` is honoured once (the page scrolls to the catalogue) and the hash is then stripped from the address bar.
+- The functional hash `#owner-review` is excluded from this policy: it keeps working as the owner access trigger (see Owner remark approval workflow).
+- Canonical link and `og:url` already point to the clean base URL without a fragment.
+
 ## Master product catalogue
 - The catalogue mirrors the MBUMAH HARDWARE master product catalogue: 15 categories, about 200 core product lines generated into the PRODUCTS array (searchable by name, brand, SKU, use and category).
 - Categories: Hand Tools & Construction Tools, Building Materials, Nails/Bolts/Nuts & Fasteners, Steel & Metal Products, Roofing Materials, Paints & Painting Accessories, Plumbing Materials, Electrical Materials, Tiles & Flooring, Doors/Locks & Furniture Fittings, Safety Equipment & Protective Wear, Welding & Metalwork Accessories, Fencing & Outdoor Construction, General Hardware & Household, Building Finishing & Accessories.
