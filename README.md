@@ -39,7 +39,7 @@ The standalone `delivery-request.html` adds a Juja-focused delivery details flow
 - **Send a draft for confirmation:** "Continue on WhatsApp" opens a prefilled message to the existing WhatsApp Sales contact. The customer reviews and sends it; the static page does not submit or persist these details.
 - **Juja coverage:** the page calls out Juja town, Juja Farm and surrounding sites. Delivery availability, route/access, schedule and transport charges remain subject to confirmation for the particular location and order.
 
-Open `delivery-request.html` from the deployed site, or run the static site locally and visit `/delivery-request.html`. The Chazaq Hardware delivery page is linked as regional context only; it is not represented as Mbumah's delivery policy, rates, minimums or service guarantees.
+Open `delivery-request.html` from the deployed site, or run the static site locally and visit `/delivery-request.html`. The delivery terms notice is short and mentions Mbumah Hardware only: deliveries run Mon to Sat 7AM to 7PM around Juja and the neighbouring estates, and the sales team confirms cost and timing for each order before dispatch.
 
 ### Manual verification checklist
 1. Open `delivery-request.html`; check the layout at desktop and mobile widths.
