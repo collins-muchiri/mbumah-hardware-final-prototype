@@ -1257,7 +1257,7 @@ a.wa-chip:hover{background:#22b357;color:#fff}
             </div>
             <input type="file" id="fFile" accept=".pdf,.xls,.xlsx,.csv" hidden>
             <p class="file-note" id="fileNote"><svg class="icon icon-sm"><use href="#i-check"/></svg> <span id="fileName"></span></p>
-            <p class="hint">Your BOQ is emailed to our yard together with your request. A WhatsApp chat link cannot carry files, so also attach it in the WhatsApp chat when it opens.</p>
+            <p class="hint">Your BOQ is emailed to our yard together with your request. A WhatsApp chat cannot carry files, so attach your BOQ in the WhatsApp chat that opens automatically after you send the request.</p>
           </div>
           <div class="check-row">
             <input type="checkbox" id="fWa" name="whatsapp" checked>
@@ -1272,7 +1272,8 @@ a.wa-chip:hover{background:#22b357;color:#fff}
           <p>Your quotation reference:</p>
           <div class="sfq-ref" id="sfqRef">MBM-0000</div>
           <p class="sfq-email" id="emailStatus" style="font-size:13px;opacity:.75;margin:6px 0 0">Your request is being pushed to our email and WhatsApp.</p>
-          <p>Our sales team will confirm itemised pricing and delivery within 30 minutes during working hours, Mon to Sat 7AM to 7PM. Tap below to continue on WhatsApp with your reference and list prefilled.</p>
+          <p>Our sales team will confirm itemised pricing and delivery within 30 minutes during working hours, Mon to Sat 7AM to 7PM. Your WhatsApp chat with our sales team opens automatically with your reference and full list prefilled.</p>
+          <p class="sfq-email" id="waStatus" style="font-size:13px;opacity:.75;margin:6px 0 0">WhatsApp is opening with your request.</p>
           <div class="success-actions">
             <a class="btn btn-navy" id="waSend" href="https://wa.me/254795191909" target="_blank" rel="noopener"><svg class="icon icon-sm"><use href="#i-whatsapp"/></svg> Continue on WhatsApp</a>
             <button class="btn btn-outline" id="newRequestBtn" type="button"><svg class="icon icon-sm"><use href="#i-plus"/></svg> Send Another Request</button>
@@ -2244,6 +2245,18 @@ document.addEventListener("DOMContentLoaded", function(){
     btn.classList.add("loading");
     btn.disabled = true;
     var ref = "MBM-" + Math.random().toString(36).slice(2,6).toUpperCase().replace(/[^A-Z0-9]/g,"X");
+    /* WhatsApp opens automatically on Send Request, while the click is still fresh,
+       so the client does not need a second tap. The manual button stays as a fallback. */
+    var waUrl = WA_LINK + "?text=" + encodeURIComponent(buildWaText(ref));
+    $("#waSend").href = waUrl;
+    var waOpened = false;
+    try {
+      var waWin = window.open(waUrl, "_blank");
+      if (waWin) { waWin.opener = null; waOpened = true; }
+    } catch (err) { waOpened = false; }
+    $("#waStatus").textContent = waOpened
+      ? "WhatsApp is opening in a new tab with your request. Just press send in that chat to deliver it to our sales team."
+      : "Your browser blocked the automatic WhatsApp tab. Tap Continue on WhatsApp below and press send.";
     setTimeout(function(){
       btn.classList.remove("loading");
       btn.disabled = false;
@@ -2251,7 +2264,6 @@ document.addEventListener("DOMContentLoaded", function(){
       $("#quoteForm").style.display = "none";
       $("#successPanel").classList.add("show");
       $("#sfqRef").textContent = ref;
-      $("#waSend").href = WA_LINK + "?text=" + encodeURIComponent(buildWaText(ref));
       sendRequestEmail(ref);
       setStep(4);
       toast("Request sent. Reference " + ref, "success");
@@ -2263,6 +2275,7 @@ document.addEventListener("DOMContentLoaded", function(){
     $("#quoteForm").style.display = "";
     $("#successPanel").classList.remove("show");
     $("#emailStatus").textContent = "";
+    $("#waStatus").textContent = "";
     renderCart();
   });
 
