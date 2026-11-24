@@ -95,13 +95,17 @@ Slideshow behaviour: auto advances every 4 seconds, crossfade 700 ms, Ken Burns 
 - Generic WhatsApp chat links (WhatsApp Sales button and the chat chips beside each phone number) open with the client's current quotation list included when one exists, otherwise with a simple enquiry greeting.
 
 ## Visitor counter and analytics
-Two independent, privacy-friendly tracking pieces are built in. Neither uses cookies, IP addresses, personal data or third-party trackers, and neither can slow the page down or break it: every call is fire-and-forget, deferred until 1.2 seconds after full page load, and every failure is swallowed silently.
+Three independent, privacy-friendly tracking pieces are built in. None of them uses cookies, IP addresses or personal data, and none of them can slow the page down or break it: every call is fire-and-forget, deferred until after the page has fully loaded, and every failure is swallowed silently.
 
 **1. Vercel Web Analytics (works immediately, dashboard only)**
-- The page injects the official Vercel snippet (`window.va` stub plus `/_vercel/insights/script.js`) on live http(s) deployments only; `file://` previews skip it.
-- To see the numbers: Vercel dashboard > the `mbumah-hardware-final-prototype` project > **Analytics** tab > enable Web Analytics (free). Pageviews, referrers, countries and devices appear within minutes of enabling. If it is not enabled yet, the script request simply 404s and nothing else changes.
+- Both pages (`index.html` and `delivery-request.html`) inject the official Vercel snippet (`window.va` stub plus `/_vercel/insights/script.js`) on live http(s) deployments only; `file://` previews skip it.
+- To see the numbers: Vercel dashboard > the `mbumah-hardware-final` project > **Analytics** tab > enable Web Analytics (free). Pageviews, referrers, countries and devices appear within minutes of enabling. If it is not enabled yet, the script request simply 404s and nothing else changes.
 
-**2. Public visits chip in the footer (one-time 5 minute setup, counts on the site itself)**
+**2. Vercel Speed Insights (real-user performance, dashboard only)**
+- Both pages also inject the Speed Insights snippet (`window.si` stub plus `/_vercel/speed-insights/script.js`) with the same guard rails: live http(s) deployments only, and a silent 404 until the feature is switched on.
+- Enable it in the dashboard (**Speed Insights** tab) and it starts collecting real-user LCP / INP / CLS per page and device. Nothing to maintain afterwards; to remove it, delete the injection block from the two pages.
+
+**3. Public visits chip in the footer (one-time 5 minute setup, counts on the site itself)**
 - A small chip (`i-eye` icon) sits in the footer bottom bar and shows `X visits · Y visitors` once a counter backend is configured. Until then it is completely hidden.
 - Backend: `integrations/visits-backend.gs`, a ~100 line Google Apps Script that stores counters in a Google Sheet it creates by itself in the owner's Google Drive. Full install steps are in the header of that file (script.google.com > new project > paste > Deploy as Web app, Execute as: Me, access: Anyone > copy the `/exec` URL).
 - Activate: paste the `/exec` URL into `var VISITS_ENDPOINT = "";` in `index.html` (near `WA_LINK` at the top of the script) and deploy as usual. To turn the chip off again, clear that variable.
@@ -111,6 +115,11 @@ Two independent, privacy-friendly tracking pieces are built in. Neither uses coo
   - `visitors` - one per device/browser: a random id kept in `localStorage` is counted once ever by the sheet (it keeps a visitor list for dedupe).
 - Accuracy limits, stated honestly: private/incognito windows and "clear browsing data" produce a new visitor id (counted as a new visitor); the ids are per browser profile, not per person; and because the endpoint is public, a determined spammer could inflate the numbers. For a local hardware site this trade-off is fine; the escape hatch is documented in the backend file (same JSON contract on any real database).
 - Maintenance: open the "Mbumah Hardware - Site Visits" sheet in Drive to read the numbers (Stats tab); clear Stats column B plus the Visitors/Sessions tabs to reset; redeploy code changes via Deploy > Manage deployments > edit > new version so the `/exec` URL never changes.
+
+## Vercel platform hardening
+- `vercel.json` sends Vercel's recommended security headers on every response: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN` (blocks third-party clickjacking), `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` with camera, microphone and geolocation locked off, `Strict-Transport-Security` (two years, includes subdomains) and `X-DNS-Prefetch-Control: on`. Verify with `curl -sI https://www.mbumahhardware.co.ke`.
+- No `Content-Security-Policy` on purpose: the site intentionally loads Google Fonts, Leaflet from jsDelivr and the Google Maps embed, and one wrong origin in the policy would break them. Revisit only if those third parties change.
+- The deprecated `X-XSS-Protection` header is intentionally omitted; the XSS auditor was removed from all modern browsers, so the header is dead weight today.
 
 ## Deploy
 `vercel deploy --prod`

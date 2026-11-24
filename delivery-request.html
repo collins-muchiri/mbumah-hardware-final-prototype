@@ -115,5 +115,29 @@
       form.remove();
     })();
   </script>
+  <script>
+    /* Vercel Web Analytics + Speed Insights: first-party tracking in the Vercel
+       dashboard, same as index.html. Injected only on live http(s) deployments;
+       file:// previews skip it, and a feature that is not enabled yet simply
+       404s without any other effect. Enable them under Project > Analytics and
+       Project > Speed Insights. */
+    (function(){
+      if (location.protocol !== "https:" && location.protocol !== "http:") return;
+      try {
+        window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments); };
+        var va = document.createElement("script");
+        va.src = "/_vercel/insights/script.js";
+        va.defer = true;
+        va.onerror = function(){ /* web analytics not enabled yet; ignore */ };
+        document.head.appendChild(va);
+        window.si = window.si || function(){ (window.siq = window.siq || []).push(arguments); };
+        var si = document.createElement("script");
+        si.src = "/_vercel/speed-insights/script.js";
+        si.defer = true;
+        si.onerror = function(){ /* speed insights not enabled yet; ignore */ };
+        document.head.appendChild(si);
+      } catch (e) { /* analytics must never break the page */ }
+    })();
+  </script>
 </body>
 </html>

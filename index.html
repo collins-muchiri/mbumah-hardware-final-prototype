@@ -2578,6 +2578,20 @@ document.addEventListener("DOMContentLoaded", function(){
       vaScript.onerror = function(){ /* analytics not enabled yet; ignore */ };
       document.head.appendChild(vaScript);
     } catch (e) { /* analytics must never break the page */ }
+
+    /* Vercel Speed Insights: real-user performance metrics (LCP, INP, CLS) in
+       the Vercel dashboard. Same guard rails as Web Analytics above: injected
+       only on live http(s) deployments, and while it is not enabled yet the
+       script request simply 404s with no other effect. Enable it under
+       Project > Speed Insights. */
+    try {
+      window.si = window.si || function(){ (window.siq = window.siq || []).push(arguments); };
+      var siScript = document.createElement("script");
+      siScript.src = "/_vercel/speed-insights/script.js";
+      siScript.defer = true;
+      siScript.onerror = function(){ /* speed insights not enabled yet; ignore */ };
+      document.head.appendChild(siScript);
+    } catch (e) { /* speed insights must never break the page */ }
   }
 
   /* Health check */
