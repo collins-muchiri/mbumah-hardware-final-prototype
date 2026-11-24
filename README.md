@@ -116,6 +116,15 @@ Three independent, privacy-friendly tracking pieces are built in. None of them u
 - Accuracy limits, stated honestly: private/incognito windows and "clear browsing data" produce a new visitor id (counted as a new visitor); the ids are per browser profile, not per person; and because the endpoint is public, a determined spammer could inflate the numbers. For a local hardware site this trade-off is fine; the escape hatch is documented in the backend file (same JSON contract on any real database).
 - Maintenance: open the "Mbumah Hardware - Site Visits" sheet in Drive to read the numbers (Stats tab); clear Stats column B plus the Visitors/Sessions tabs to reset; redeploy code changes via Deploy > Manage deployments > edit > new version so the `/exec` URL never changes.
 
+## Local SEO implementation (Juja playbook)
+- Title tag and meta description carry the money keywords: "Hardware Store in Juja", building materials, same-day delivery, plus the estate names (Juja Farm, Gachororo, Kalimoni) that buyers actually search. `og:`/`twitter:` tags mirror them.
+- Hero H1 reads "Juja's Trusted Hardware and Building Materials Partner" - category plus location in the strongest on-page signal; hero font size tuned to keep it on two lines.
+- `robots.txt` allows all crawlers and points at the sitemap; `sitemap.xml` lists `/` and `/delivery-request` (clean URLs, matching `cleanUrls: true`).
+- JSON-LD: the `HardwareStore` block gains a `slogan` and a full `areaServed` list (Juja, Juja Farm, Gachororo, Kalimoni, Witeithie, Mangu, Kenyatta Road); a separate `FAQPage` block mirrors the 15 on-page FAQ questions exactly.
+- FAQ grew from 6 to 15 answers covering the research questions Juja buyers type: mabati gauge (26/28/30), 32.5N vs 42.5N cement, roofing a three-bedroom cost path, fencing a plot, minimum orders, Sunday opening, BOQ submission, quotation speed, JKUAT landlord projects. No prices are invented - every answer ends in the quotation flow.
+- New "Delivery Around Juja" card in Find Us names the estates and the JKUAT/Kenyatta Road corridors; internal links connect Catalogue -> FAQ/Delivery and the coverage row -> FAQ.
+- `delivery-request.html` mirrors the pattern: title "Building Materials Delivery in Juja", estate meta description, canonical to `/delivery-request`, and OG/Twitter tags.
+
 ## Vercel platform hardening
 - `vercel.json` sends Vercel's recommended security headers on every response: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN` (blocks third-party clickjacking), `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` with camera, microphone and geolocation locked off, `Strict-Transport-Security` (two years, includes subdomains) and `X-DNS-Prefetch-Control: on`. Verify with `curl -sI https://www.mbumahhardware.co.ke`.
 - No `Content-Security-Policy` on purpose: the site intentionally loads Google Fonts, Leaflet from jsDelivr and the Google Maps embed, and one wrong origin in the policy would break them. Revisit only if those third parties change.
