@@ -1384,6 +1384,7 @@ a.wa-chip:hover{background:#22b357;color:#fff}
   <div class="footer-bottom">
     <div class="container" style="display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between">
       <span>© <span id="year">2026</span> Mbumah Hardware. All rights reserved. Prices confirmed on quotation.</span>
+      <span class="ver" id="visitChip" hidden><svg class="icon icon-sm"><use href="#i-eye"/></svg> <span id="visitCount">Visits</span></span>
       <span class="ver">Version v1.0 | Release v1.0-mbumah-final</span>
     </div>
   </div>
@@ -1454,6 +1455,10 @@ a.wa-chip:hover{background:#22b357;color:#fff}
 "use strict";
 var WA_NUMBER = "254795191909";
 var WA_LINK = "https://wa.me/" + WA_NUMBER;
+/* Visitor counter endpoint: after deploying integrations/visits-backend.gs once
+   (Google Apps Script, steps in its header and in the README), paste its /exec URL
+   between the quotes below. Leave it empty and the visits chip stays hidden. */
+var VISITS_ENDPOINT = "";
 /* Yard pin for the Find Us map: the exact Mbumah Hardware Google Maps place
    (same place as delivery-request.html). To move the pin, change these
    coordinates and update the iframe src plus the map-actions links in the HTML. */
@@ -2517,6 +2522,63 @@ document.addEventListener("DOMContentLoaded", function(){
   function checkOwnerHash(){ if (location.hash.replace("#", "") === "owner-review") openOwnerPanel(); }
   window.addEventListener("hashchange", checkOwnerHash);
   checkOwnerHash();
+
+  /* Visitor counter: anonymous, cookie-free visit tracking shown in the footer.
+     vid is a random id kept in localStorage on this device (first-time visitor detection);
+     sid is a random id kept in sessionStorage (one visit per browsing session, reloads
+     inside one session do not inflate it). No IP addresses, no personal data and no
+     cookies are stored anywhere. Counts live in the owner's own Google Sheet once the
+     endpoint in VISITS_ENDPOINT is configured; until then the chip stays hidden. */
+  function trackVisits(){
+    var chip = $("#visitChip");
+    var endpoint = VISITS_ENDPOINT || window.MBUMAH_VISITS_ENDPOINT || "";
+    if (!chip || !endpoint) return;
+    function uuid(){
+      if (window.crypto && crypto.getRandomValues) {
+        var b = crypto.getRandomValues(new Uint8Array(16));
+        b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+        var h = Array.prototype.map.call(b, function(x){ return ("0" + x.toString(16)).slice(-2); }).join("");
+        return h.slice(0, 8) + "-" + h.slice(8, 12) + "-" + h.slice(12, 16) + "-" + h.slice(16, 20) + "-" + h.slice(20);
+      }
+      return "mb-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    }
+    var vid, sid;
+    try { vid = localStorage.getItem("mbumah_vid"); if (!vid) { vid = uuid(); localStorage.setItem("mbumah_vid", vid); } } catch (e) { vid = uuid(); }
+    try { sid = sessionStorage.getItem("mbumah_sid"); if (!sid) { sid = uuid(); sessionStorage.setItem("mbumah_sid", sid); } } catch (e) { sid = uuid(); }
+    var fire = function(){
+      /* A string body keeps this a CORS simple request, which the Apps Script
+         backend requires (no preflight). Fire and forget: the counter is
+         decorative and must never break or slow the page. */
+      fetch(endpoint, { method: "POST", body: JSON.stringify({ vid: vid, sid: sid, page: location.pathname }) })
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(d){
+          if (!d || (!d.visits && !d.visitors)) return;
+          var n = function(x){ return Number(x || 0).toLocaleString("en-KE"); };
+          $("#visitCount").textContent = n(d.visits) + " visits \u00b7 " + n(d.visitors) + " visitors";
+          chip.hidden = false;
+        })
+        .catch(function(){ /* service unreachable: stay hidden */ });
+    };
+    /* Run only after the page has fully settled, so it never competes with rendering */
+    if (document.readyState === "complete") setTimeout(fire, 1200);
+    else window.addEventListener("load", function(){ setTimeout(fire, 1200); });
+  }
+  trackVisits();
+
+  /* Vercel Web Analytics: first-party pageview tracking in the Vercel dashboard.
+     Injected only on live http(s) deployments; file:// previews skip it, and if
+     Web Analytics is not enabled for the project yet the script simply 404s and
+     the site carries on unaffected. Enable it under Project > Analytics. */
+  if (location.protocol === "https:" || location.protocol === "http:") {
+    try {
+      window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments); };
+      var vaScript = document.createElement("script");
+      vaScript.src = "/_vercel/insights/script.js";
+      vaScript.defer = true;
+      vaScript.onerror = function(){ /* analytics not enabled yet; ignore */ };
+      document.head.appendChild(vaScript);
+    } catch (e) { /* analytics must never break the page */ }
+  }
 
   /* Health check */
   window.MBUMAH_HEALTH = function(){

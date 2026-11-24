@@ -94,6 +94,24 @@ Slideshow behaviour: auto advances every 4 seconds, crossfade 700 ms, Ken Burns 
 - Clicking **Send Request** opens WhatsApp automatically in a new tab with the full request prefilled (reference, client details, numbered list), so no second tap is needed. The link is opened inside the click so browsers do not block it; if a browser blocks it anyway, the success panel says so and `Continue on WhatsApp` stays as the manual fallback with the same message. A WhatsApp chat link cannot carry file attachments, so the BOQ travels by email and the message asks the client to attach it in the chat as well.
 - Generic WhatsApp chat links (WhatsApp Sales button and the chat chips beside each phone number) open with the client's current quotation list included when one exists, otherwise with a simple enquiry greeting.
 
+## Visitor counter and analytics
+Two independent, privacy-friendly tracking pieces are built in. Neither uses cookies, IP addresses, personal data or third-party trackers, and neither can slow the page down or break it: every call is fire-and-forget, deferred until 1.2 seconds after full page load, and every failure is swallowed silently.
+
+**1. Vercel Web Analytics (works immediately, dashboard only)**
+- The page injects the official Vercel snippet (`window.va` stub plus `/_vercel/insights/script.js`) on live http(s) deployments only; `file://` previews skip it.
+- To see the numbers: Vercel dashboard > the `mbumah-hardware-final-prototype` project > **Analytics** tab > enable Web Analytics (free). Pageviews, referrers, countries and devices appear within minutes of enabling. If it is not enabled yet, the script request simply 404s and nothing else changes.
+
+**2. Public visits chip in the footer (one-time 5 minute setup, counts on the site itself)**
+- A small chip (`i-eye` icon) sits in the footer bottom bar and shows `X visits · Y visitors` once a counter backend is configured. Until then it is completely hidden.
+- Backend: `integrations/visits-backend.gs`, a ~100 line Google Apps Script that stores counters in a Google Sheet it creates by itself in the owner's Google Drive. Full install steps are in the header of that file (script.google.com > new project > paste > Deploy as Web app, Execute as: Me, access: Anyone > copy the `/exec` URL).
+- Activate: paste the `/exec` URL into `var VISITS_ENDPOINT = "";` in `index.html` (near `WA_LINK` at the top of the script) and deploy as usual. To turn the chip off again, clear that variable.
+- How it is counted (all server side, so refreshes and tabs are accurate):
+  - `views` - every page load. Not shown in the chip; kept in the sheet.
+  - `visits` - one per browsing session: the browser sends a random session id kept in `sessionStorage`, so reloads inside one session do not inflate the count.
+  - `visitors` - one per device/browser: a random id kept in `localStorage` is counted once ever by the sheet (it keeps a visitor list for dedupe).
+- Accuracy limits, stated honestly: private/incognito windows and "clear browsing data" produce a new visitor id (counted as a new visitor); the ids are per browser profile, not per person; and because the endpoint is public, a determined spammer could inflate the numbers. For a local hardware site this trade-off is fine; the escape hatch is documented in the backend file (same JSON contract on any real database).
+- Maintenance: open the "Mbumah Hardware - Site Visits" sheet in Drive to read the numbers (Stats tab); clear Stats column B plus the Visitors/Sessions tabs to reset; redeploy code changes via Deploy > Manage deployments > edit > new version so the `/exec` URL never changes.
+
 ## Deploy
 `vercel deploy --prod`
 
